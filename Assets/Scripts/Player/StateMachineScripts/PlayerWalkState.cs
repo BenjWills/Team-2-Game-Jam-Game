@@ -19,6 +19,7 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void UpdateState() 
     {
+
         CheckSwitchStates();
         if (Ctx.moveDirection.x * Ctx.movementSpeed * Time.deltaTime != 0||Ctx.moveDirection.z * Ctx.movementSpeed * Time.deltaTime != 0)
         {

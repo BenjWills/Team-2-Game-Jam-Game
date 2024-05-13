@@ -41,7 +41,7 @@ public class MenuManager : MonoBehaviour
     private void Start()
     {
         playerStateMachine = FindObjectOfType<PlayerStateMachine>();
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
         EventSystem.current.SetSelectedGameObject(FS_Menu);
     }
 
