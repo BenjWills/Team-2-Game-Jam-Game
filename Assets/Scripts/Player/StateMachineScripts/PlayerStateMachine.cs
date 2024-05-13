@@ -10,47 +10,26 @@ using UnityEngine.Windows;
 public class PlayerStateMachine : MonoBehaviour
 {
     public Transform cameraObject;
-    public MenuManager menuManager;
+    public Transform _PlayerTrack;
     public GameManagerStateMachine gameManager;
-    public RebindUI rebindUI;
-    public SubtitleManager subtitleManager;
-    //[Header("Inputs")]
-    public CharacterController characterController;
+    public MenuManager menuManager;
     public SettingsMenu settingsMenu;
-    [Header("Accessibility Settings")]
-    [Range(0, 2)]
-    public static int controlScheme;
-
-
-    [Header("Interact Text Change")]
-    public InputActionReference inputActionReference;
-    public string inputActionDisplayed;
+    public RebindUI rebindUI;
+    public CharacterController characterController;
 
     [Header("Player Walk Variables")]
     public Vector3 moveDirection;
-    public float movementSpeed = 5;
-
+    public float movementSpeed = 10;
 
     [Header("Player Interact Variables")]
-    public GameObject loadBar;
-    public GameObject pointer;
-    public TMP_Text InteractPromptText;
-    public Animator InteractPromptTextAnim;
+    //public TMP_Text InteractPromptText;
+    //public Animator InteractPromptTextAnim;
     public float rayLength = 2;
     public LayerMask layerMaskInteract;
-    public GameObject loadingCurrent;
-    public GameObject pointerCurrent;
-    public Animator wiggleAnimator;
-    public GameObject currentObject;
-    public bool loading;
-    public Vector3 pointOfInterest;
-    public Vector3 loadingReference;
-    public float BarTransitionTime = 25f;
-    public string interactTextState;
-
+    public List<GameObject> _InteractablesInCone;
 
     [Header("Input Start Up")]
-    public ISInputSystem PlayerInput;
+    public PlayerInputSystem PlayerInput;
 
     [Header("Movement Controls")]
     Vector2 movementInput;
@@ -60,13 +39,11 @@ public class PlayerStateMachine : MonoBehaviour
     [Header("Camera Values")]
     public float cameraInputX;
     public float cameraInputY;
+    public float _SensitivityMultiplier;
     [Header("Interact Button")]
     public bool IsInteractPressed;
-    public bool interactedCS1;
     [Header("Menu Open Close Button")]
     public bool IsMenuOpenClosePressed;
-    [Header("Backwards Button")]
-    public bool backwardsInput;
 
     [Header("Vert/Hor Input")]
     public float vertInput;
@@ -79,16 +56,14 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Awake()
     {
-        //playerInput = GetComponent<PlayerInput>();
         menuManager = FindObjectOfType<MenuManager>();
         settingsMenu = FindObjectOfType<SettingsMenu>();
-        subtitleManager = FindObjectOfType<SubtitleManager>();
         gameManager = FindObjectOfType<GameManagerStateMachine>();
         characterController = GetComponent<CharacterController>();
-        menuManager.PlayerUI.SetActive(true);
-        InteractPromptText = GameObject.FindWithTag("InteractPromptText").GetComponent<TMP_Text>();
-        InteractPromptTextAnim = GameObject.FindWithTag("InteractPromptText").GetComponent<Animator>();
-        menuManager.PlayerUI.SetActive(false);
+        //menuManager.PlayerUI.SetActive(true);
+        //InteractPromptText = GameObject.FindWithTag("InteractPromptText").GetComponent<TMP_Text>();
+        //InteractPromptTextAnim = GameObject.FindWithTag("InteractPromptText").GetComponent<Animator>();
+        //menuManager.PlayerUI.SetActive(false);
         cameraObject = Camera.main.transform;
         states = new PlayerStateFactory(this);
         currentState = states.Idle();
@@ -125,6 +100,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void OnDisable()
     {
+        PlayerInput = InputManager.PlayerInput;
         PlayerInput.Disable();
         PlayerInput.Main.Movement.performed -= OnMove;
         PlayerInput.Main.Movement.canceled -= OnMove;
@@ -148,7 +124,6 @@ public class PlayerStateMachine : MonoBehaviour
     {
         IsInteractPressed = ctx.ReadValueAsButton();
     }
-
     private void OnMenuOpenClose(InputAction.CallbackContext ctx)
     {
         IsMenuOpenClosePressed = ctx.ReadValueAsButton();
@@ -158,49 +133,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         vertInput = movementInput.y;
         horInput = movementInput.x;
-        cameraInputY = cameraInput.y * settingsMenu.sensitivityMultiplier;
-        cameraInputX = cameraInput.x * settingsMenu.sensitivityMultiplier;
-    }
-
-    public bool CanInteract()
-    {
-        switch (controlScheme)
-        {
-            case 0:
-                interactTextState = "Press " + InputManager.GetBindingName(inputActionReference.action.name, 0) + " or " + InputManager.GetBindingName(inputActionReference.action.name, 1);
-                if (IsInteractPressed)
-                {
-                    return true;
-                }
-                return false;
-            case 1:
-                interactTextState = "Hover over";
-                return true;
-        }
-        return false;
-    }
-
-    public string WalkText()
-    {
-        List<string> inputs = new();
-        int bindingAmount = new();
-        int bindingMax = walkActionReference.action.bindings.Count;
-        while (bindingAmount < bindingMax)
-        {
-            if (walkActionReference.action.bindings[bindingAmount].isComposite)
-            {
-                inputs.Add(InputManager.GetBindingName(walkActionReference.action.name, bindingAmount));
-            }
-            else if (walkActionReference.action.bindings[bindingAmount].isPartOfComposite)
-            {
-
-            }
-            else
-            {
-                inputs.Add(InputManager.GetBindingName(walkActionReference.action.name, bindingAmount));
-            }
-            bindingAmount++;
-        }
-        return "Press " + inputs[0] + " or " + inputs[3] + " to move.";
+        cameraInputY = cameraInput.y * settingsMenu._SensitivityMultiplier;
+        cameraInputX = cameraInput.x * settingsMenu._SensitivityMultiplier;
     }
 }
