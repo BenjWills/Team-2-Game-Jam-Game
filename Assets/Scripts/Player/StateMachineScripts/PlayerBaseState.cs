@@ -49,10 +49,6 @@ public abstract class PlayerBaseState
         {
             currentSuperState.SetSubState(newState); // Sets the current super states sub state to the new state
         }
-        else if (currentCharacterState!=null)
-        {
-            currentCharacterState.SetCharacterState(newState);
-        }
     }
     protected void SetSuperState(PlayerBaseState newSuperState) 
     {
