@@ -16,31 +16,16 @@ public class PlayerWalkState : PlayerBaseState
 
     public override void EnterState() 
     {
-        Ctx.gameManager.justStarted = false;
     }
     public override void UpdateState() 
     {
         CheckSwitchStates();
-        switch (PlayerStateMachine.controlScheme)
-        {
-            case 0:
-                DefaultControls();
-                break;
-            case 1:
-                DefaultControls();
-                break;
-            case 2:
-                DefaultControls();
-                break;
-        }
-        Ctx.moveDirection.y = 0;
-        Ctx.characterController.Move(Ctx.moveDirection * Ctx.movementSpeed * Time.deltaTime);
         if (Ctx.moveDirection.x * Ctx.movementSpeed * Time.deltaTime != 0||Ctx.moveDirection.z * Ctx.movementSpeed * Time.deltaTime != 0)
         {
             if(moveSoundTimer<=0)
             {
                 moveSoundTimer = 0.5f;
-                AudioManager.Instance.PlayWalk();
+                //AudioManager.Instance.PlayWalk();
             }
             else
             {
@@ -55,11 +40,7 @@ public class PlayerWalkState : PlayerBaseState
         {
             SwitchState(Factory.Idle());
         }
-        else if(!Ctx.gameManager.canMove)
-        {
-            SwitchState(Factory.Idle());
-        }
-        else if(Ctx.gameManager.inDeliberation)
+        else if(!Ctx.gameManager._CanMove)
         {
             SwitchState(Factory.Idle());
         }
@@ -69,10 +50,25 @@ public class PlayerWalkState : PlayerBaseState
     {
         SetSubState(Factory.Interact());
     }
+    public override void InitializeCharacterState()
+    {
 
+    }
     private void DefaultControls()
     {
         Ctx.moveDirection = Ctx.cameraObject.forward * Ctx.vertInput;
         Ctx.moveDirection = Ctx.moveDirection + Ctx.cameraObject.right * Ctx.horInput;
+    }
+
+    private void ApplyPlayerInput()
+    {
+        Ctx.moveDirection = Ctx.cameraObject.forward * Ctx.vertInput;
+        Ctx.moveDirection = Ctx.moveDirection + Ctx.cameraObject.right * Ctx.horInput;
+        Ctx.moveDirection.y = 0f;
+    }
+    private void ApplyMovement()
+    {
+        Ctx.moveDirection.y = 0;
+        Ctx.characterController.Move(Ctx.moveDirection * Ctx.movementSpeed * Time.deltaTime);
     }
 }

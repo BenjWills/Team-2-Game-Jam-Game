@@ -42,6 +42,8 @@ public class PlayerStateMachine : MonoBehaviour
     public float _SensitivityMultiplier;
     [Header("Interact Button")]
     public bool IsInteractPressed;
+    [Header("Switch Button")]
+    public bool IsSwitchPressed;
     [Header("Menu Open Close Button")]
     public bool IsMenuOpenClosePressed;
 
@@ -60,10 +62,6 @@ public class PlayerStateMachine : MonoBehaviour
         settingsMenu = FindObjectOfType<SettingsMenu>();
         gameManager = FindObjectOfType<GameManagerStateMachine>();
         characterController = GetComponent<CharacterController>();
-        //menuManager.PlayerUI.SetActive(true);
-        //InteractPromptText = GameObject.FindWithTag("InteractPromptText").GetComponent<TMP_Text>();
-        //InteractPromptTextAnim = GameObject.FindWithTag("InteractPromptText").GetComponent<Animator>();
-        //menuManager.PlayerUI.SetActive(false);
         cameraObject = Camera.main.transform;
         states = new PlayerStateFactory(this);
         currentState = states.Idle();
@@ -95,6 +93,7 @@ public class PlayerStateMachine : MonoBehaviour
         PlayerInput.Main.Turn.performed += OnTurn;
         PlayerInput.Main.Turn.canceled += OnTurn;
         PlayerInput.Main.Interact.started += OnInteract;
+        PlayerInput.Main.Switch.started += OnSwitch;
         PlayerInput.Main.MenuOpenClose.started += OnMenuOpenClose;
     }
 
@@ -107,6 +106,7 @@ public class PlayerStateMachine : MonoBehaviour
         PlayerInput.Main.Turn.performed -= OnTurn;
         PlayerInput.Main.Turn.canceled -= OnTurn;
         PlayerInput.Main.Interact.started -= OnInteract;
+        PlayerInput.Main.Switch.started -= OnSwitch;
         PlayerInput.Main.MenuOpenClose.started += OnMenuOpenClose;
     }
 
@@ -123,6 +123,10 @@ public class PlayerStateMachine : MonoBehaviour
     private void OnInteract(InputAction.CallbackContext ctx)
     {
         IsInteractPressed = ctx.ReadValueAsButton();
+    }
+    private void OnSwitch(InputAction.CallbackContext ctx)
+    {
+        IsSwitchPressed = ctx.ReadValueAsButton();
     }
     private void OnMenuOpenClose(InputAction.CallbackContext ctx)
     {
