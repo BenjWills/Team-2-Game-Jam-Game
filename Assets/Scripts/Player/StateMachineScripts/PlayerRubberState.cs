@@ -13,6 +13,7 @@ public class PlayerRubberState : PlayerBaseState
     public override void EnterState() { }
     public override void UpdateState() 
     {
+        Debug.Log("Rubber");
         CheckSwitchStates();
     }
     public override void ExitState() { }

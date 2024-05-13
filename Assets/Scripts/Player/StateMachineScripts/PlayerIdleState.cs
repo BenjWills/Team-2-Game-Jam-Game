@@ -25,6 +25,7 @@ public class PlayerIdleState : PlayerBaseState
                 SwitchState(Factory.Walk());
             }
         }
+        InitializeCharacterState();
         SetSubState(Factory.Interact());
     }
     public override void InitializeSubState() 
@@ -33,6 +34,17 @@ public class PlayerIdleState : PlayerBaseState
     }
     public override void InitializeCharacterState()
     {
-        
+        if (Ctx._IsRubber)
+        {
+            SetCharacterState(Factory.Rubber());
+        }
+        else if (Ctx._IsRuler)
+        {
+            SetCharacterState(Factory.Ruler());
+        }
+        else if (Ctx._IsPencil)
+        {
+            SetCharacterState(Factory.Pencil());
+        }
     }
 }

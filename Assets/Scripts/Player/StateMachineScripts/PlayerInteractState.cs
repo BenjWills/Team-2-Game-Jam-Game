@@ -32,15 +32,39 @@ public class PlayerInteractState : PlayerBaseState
     }
     private void InteractRaycast()
     {
-        RaycastHit hit;
-        Vector3 front = Ctx.cameraObject.TransformDirection(Vector3.forward);
-        var mask = Ctx.layerMaskInteract.value;
-        Debug.DrawRay(Ctx.cameraObject.position, front, Color.green);
-        if (Physics.Raycast(Ctx.cameraObject.position, front, out hit, Ctx.rayLength, mask))
+        int index = 0;
+        switch (Ctx.ReturnCharacterName())
         {
-            if (hit.collider.tag == "Interact")
-            {
-            }
+            case "rubber":
+                foreach (GameObject interactable in Ctx._InteractablesInRubber)
+                {
+                    var mask = Ctx.layerMaskInteract.value;
+                    if (!Physics.Linecast(Ctx._PlayerTrack[Ctx.CharacterType].position, interactable.transform.position, mask) && Ctx.IsInteractPressed && index == 0)
+                    {
+                        //trigger action or something
+                    }
+                }
+                break;
+            case "ruler":
+                foreach (GameObject interactable in Ctx._InteractablesInRuler)
+                {
+                    var mask = Ctx.layerMaskInteract.value;
+                    if (!Physics.Linecast(Ctx._PlayerTrack[Ctx.CharacterType].position, interactable.transform.position, mask) && Ctx.IsInteractPressed && index == 0)
+                    {
+                        //trigger action or something
+                    }
+                }
+                break;
+            case "pencil":
+                foreach (GameObject interactable in Ctx._InteractablesInPencil)
+                {
+                    var mask = Ctx.layerMaskInteract.value;
+                    if (!Physics.Linecast(Ctx._PlayerTrack[Ctx.CharacterType].position, interactable.transform.position, mask) && Ctx.IsInteractPressed && index == 0)
+                    {
+                        //trigger action or something
+                    }
+                }
+                break;
         }
     }
 }

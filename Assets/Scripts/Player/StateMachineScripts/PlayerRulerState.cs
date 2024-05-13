@@ -13,6 +13,7 @@ public class PlayerRulerState : PlayerBaseState
     public override void EnterState() { }
     public override void UpdateState() 
     {
+        Debug.Log("Ruler");
         CheckSwitchStates();
     }
     public override void ExitState() { }
