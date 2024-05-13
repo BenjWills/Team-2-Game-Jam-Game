@@ -23,4 +23,16 @@ public class PlayerStateFactory
     {
         return new PlayerInteractState(context, this);
     }
+    public PlayerBaseState Rubber()
+    {
+        return new PlayerRubberState(context, this);
+    }
+    public PlayerBaseState Ruler()
+    {
+        return new PlayerRulerState(context, this);
+    }
+    public PlayerBaseState Pencil()
+    {
+        return new PlayerPencilState(context, this);
+    }
 }
