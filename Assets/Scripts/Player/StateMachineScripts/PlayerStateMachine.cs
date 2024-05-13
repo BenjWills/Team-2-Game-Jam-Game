@@ -38,8 +38,8 @@ public class PlayerStateMachine : MonoBehaviour
     public bool _IsPencil;
     public bool ShouldChangeCharacter;
     public bool FinishTransform;
-    public CharacterController[] characterControllers;
-    public Sprite[] characterSprites;
+    public List<CharacterController> characterControllers;
+    public SpriteRenderer[] characterSprites;
 
     [Header("Rubber")]
     public CharacterController rubberController;
@@ -56,7 +56,6 @@ public class PlayerStateMachine : MonoBehaviour
 
     [Header("Movement Controls")]
     Vector2 movementInput;
-    public InputActionReference walkActionReference;
     [Header("Camera Controls")]
     Vector2 cameraInput;
     [Header("Camera Values")]
@@ -88,6 +87,9 @@ public class PlayerStateMachine : MonoBehaviour
         states = new PlayerStateFactory(this);
         currentState = states.Idle();
         currentState.EnterState();
+        characterControllers.Add(rubberController);
+        characterControllers.Add(rulerController);
+        characterControllers.Add(pencilController);
     }
 
     private void Start()
@@ -138,6 +140,8 @@ public class PlayerStateMachine : MonoBehaviour
             CameraFadeAnimator.SetBool("Switch", true);
             if (FinishTransform)
             {
+                ShouldChangeCharacter = false;
+                FinishTransform = false;
                 CameraFadeAnimator.SetBool("Switch", false);
                 ChangeCharacter();
             }
@@ -160,8 +164,10 @@ public class PlayerStateMachine : MonoBehaviour
             camera.Priority = 10;
             if (camIndex == CharacterType)
             {
+                Debug.Log(camera);
                 camera.Priority = 11;
             }
+            camIndex++;
         }
         AdjustValues();
     }
@@ -187,10 +193,12 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void TurnSpritesToCamera()
     {
-        foreach(Sprite sprite in characterSprites)
+        foreach(SpriteRenderer sprite in characterSprites)
         {
-            GameObject spriteObj = sprite.GetComponent<GameObject>();
-            spriteObj.transform.LookAt(Camera.main.transform);
+            //GameObject spriteObj = sprite.GetComponent<GameObject>();
+            sprite.transform.LookAt(Camera.main.transform);
+            var newRot = sprite.transform.rotation.eulerAngles;
+            sprite.transform.rotation = Quaternion.Euler(0,newRot.y,0);
         }
     }
 

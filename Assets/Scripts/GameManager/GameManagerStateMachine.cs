@@ -30,13 +30,14 @@ public class GameManagerStateMachine : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        //SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         states = new GameManagerStateFactory(this);
         //_Paused = true;
     }
 
     private void Start()
     {
+        _PlayingGame = true;
         menuManager = GameObject.FindObjectOfType<MenuManager>();
         //audioManager = GameObject.FindObjectOfType<AudioManager>();
         menuCamera = GameObject.FindGameObjectWithTag("MenuCamera").GetComponent<CinemachineVirtualCamera>();
@@ -58,6 +59,10 @@ public class GameManagerStateMachine : MonoBehaviour
         {
             _CanMove = false;
         }
-        if (!_CanMove ) { }
+        else
+        {
+            _CanMove = true;
+        }
+        //if (!_CanMove ) { }
     }
 }
