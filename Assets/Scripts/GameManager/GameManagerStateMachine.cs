@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManagerStateMachine : MonoBehaviour
 {
@@ -19,6 +20,12 @@ public class GameManagerStateMachine : MonoBehaviour
     public bool _PlayingGame; //checks if the game is being played or not (will be in menu if not being played)
     public bool _CanMove;
     public Vector3 playerPosition; //*
+
+    public float _GameplayTimer;
+    public float _MaxTimer = 150f;
+    public Image TimerImage;
+    public bool CopSummoned;
+    public bool CharacterSacrificed;
 
     [Header("Cinemachine")]
     public CinemachineVirtualCamera menuCamera;
@@ -52,6 +59,7 @@ public class GameManagerStateMachine : MonoBehaviour
         Cameras.Add(pencilCamera);
         currentState = states.Menu();
         currentState.EnterState();
+        _GameplayTimer = 0;
     }
     private void Update()
     {
@@ -61,5 +69,40 @@ public class GameManagerStateMachine : MonoBehaviour
         //    _CanMove = false;
         //}
         //if (!_CanMove ) { }
+        GameplayTimer();
+    }
+
+    private void GameplayTimer()
+    {
+        CopSpawned();
+        PauseTimerForSacrifice();
+        TimerEndReached();
+        TimerImage.fillAmount = _GameplayTimer / _MaxTimer;
+    }
+
+    private void CopSpawned()
+    {
+        if (_GameplayTimer >= 30 && !CopSummoned)
+        {
+            CopSummoned = true;
+            //summon cop
+        }
+    }
+    private void PauseTimerForSacrifice()
+    {
+        if (_GameplayTimer >= 120 && !CharacterSacrificed)
+        {
+        }
+        else
+        {
+            _GameplayTimer += Time.deltaTime;
+        }
+    }
+    private void TimerEndReached()
+    {
+        if (_GameplayTimer >= _MaxTimer)
+        {
+            _GameplayTimer = _MaxTimer;
+        }
     }
 }
