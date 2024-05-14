@@ -10,13 +10,19 @@ public class PlayerRubberState : PlayerBaseState
         IsRootState= true;
         InitializeSubState();
     }
-    public override void EnterState() { }
+
+    public override void EnterState() 
+    {
+    }
     public override void UpdateState() 
     {
-        Debug.Log("Rubber");
         CheckSwitchStates();
+        ChangeAnimation();
     }
-    public override void ExitState() { }
+    public override void ExitState() 
+    {
+        Ctx.CharacterAnimators[0].SetBool("walking", false);
+    }
     public override void CheckSwitchStates() 
     {
 
@@ -28,4 +34,12 @@ public class PlayerRubberState : PlayerBaseState
     {
 
     }
+
+    private void ChangeAnimation()
+    {
+        Ctx.CharacterAnimators[0].SetBool("walking", Ctx._Walking);
+        Ctx.CharacterAnimators[0].SetBool("action", Ctx._Actioning);
+        Debug.Log("!");
+    }
+
 }

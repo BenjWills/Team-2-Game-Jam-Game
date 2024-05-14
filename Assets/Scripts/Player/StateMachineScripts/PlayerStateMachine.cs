@@ -17,9 +17,11 @@ public class PlayerStateMachine : MonoBehaviour
     public MenuManager menuManager;
     public SettingsMenu settingsMenu;
     public RebindUI rebindUI;
+    public Animator[] CharacterAnimators;
     [Header("Player Walk Variables")]
     public Vector3 moveDirection;
     public float movementSpeed = 10;
+    public bool _Walking;
 
     [Header("Player Interact Variables")]
     //public TMP_Text InteractPromptText;
@@ -29,6 +31,7 @@ public class PlayerStateMachine : MonoBehaviour
     public List<GameObject> _InteractablesInRubber;
     public List<GameObject> _InteractablesInRuler;
     public List<GameObject> _InteractablesInPencil;
+    public bool _Actioning;
 
     [Header("Character Values")]
     [Range(0, 2)]
@@ -43,12 +46,15 @@ public class PlayerStateMachine : MonoBehaviour
 
     [Header("Rubber")]
     public CharacterController rubberController;
+    public bool _RubberTaken;
 
     [Header("Ruler")]
     public CharacterController rulerController;
+    public bool _RulerTaken;
 
     [Header("Pencil")]
     public CharacterController pencilController;
+    public bool _PencilTaken;
 
 
     [Header("Input Start Up")]
@@ -96,7 +102,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Start()
     {
-        
+        AdjustValues();
     }
 
     private void Update()
@@ -161,6 +167,7 @@ public class PlayerStateMachine : MonoBehaviour
         {
             CharacterType++;
         }
+        HasCharacterBeenSacrificed();
         int camIndex = -1;
         foreach(CinemachineVirtualCamera camera in gameManager.Cameras)
         {
@@ -172,6 +179,22 @@ public class PlayerStateMachine : MonoBehaviour
             camIndex++;
         }
         AdjustValues();
+    }
+
+    private void HasCharacterBeenSacrificed()
+    {
+        if (_RubberTaken&&CharacterType==0)
+        {
+            CharacterType++;
+        }
+        if (_RulerTaken && CharacterType == 1)
+        {
+            CharacterType++;
+        }
+        if (_PencilTaken && CharacterType == 2)
+        {
+            CharacterType = 0;
+        }
     }
 
     private void AdjustValues()

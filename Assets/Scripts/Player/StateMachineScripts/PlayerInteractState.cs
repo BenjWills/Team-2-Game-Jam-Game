@@ -56,6 +56,7 @@ public class PlayerInteractState : PlayerBaseState
                 }
                 break;
         }
+        CheckForInteractables();
     }
 
     private void CheckForInteractables()
