@@ -5,16 +5,32 @@ using UnityEngine.AI;
 
 public class AIScript : MonoBehaviour
 {
-    public NavMeshAgent agent;
-    private GameObject AIObject;
-    public Transform aiEndPoint;
-    public Transform[] character;
+    public AIStates currentState;
+    public readonly RubberFollowState rfs = new RubberFollowState();
+    public readonly PencilFollowState pfs = new PencilFollowState();
+    public readonly RulerFollowState rufs = new RulerFollowState();
+    public readonly AIWinState ws = new AIWinState();
 
-    private float AICharacterDis;
-    private float AICharacterDis2;
-    private float AICharacterDis3;
-    private float finalValueDis;
-    private bool desicionMade;
+    public NavMeshAgent agent;
+
+    private GameObject AIObject;
+    public GameObject rubber;
+    public GameObject ruler;
+    public GameObject pencil;
+
+    public Transform aiEndPoint;
+    public List<Transform> character;
+
+    public float AICharacterDis;
+    public float AICharacterDis2;
+    public float AICharacterDis3;
+    public float finalValueDis;
+    public float characterCaughtCounter;
+
+    public bool cCaught;
+    public bool c1Caught;
+    public bool c2Caught;
+
 
     private void Awake()
     {
@@ -24,47 +40,83 @@ public class AIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        if (finalValueDis == AICharacterDis)
+        {
+            aiEndPoint.position = character[0].position;
+            TransitionToState(rfs);
+        }
+        else if (finalValueDis == AICharacterDis2)
+        {
+            aiEndPoint.position = character[1].position;
+            TransitionToState(rufs);
+        }
+        else if (finalValueDis == AICharacterDis3)
+        {
+            aiEndPoint.position = character[2].position;
+            TransitionToState(pfs);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("1 " + AICharacterDis);
-        Debug.Log("2 " + AICharacterDis2);
-        Debug.Log("3 " + AICharacterDis3);
+        if (cCaught == true)
+        {
+            AICharacterDis = 1000;
+            Destroy(rubber);
+        }
+        else
+        {
+            AICharacterDis = Vector3.Distance(character[0].position, AIObject.transform.position);
+        }
+        if (c1Caught == true)
+        {
+            AICharacterDis2 = 1000;
+            Destroy(ruler);
+        }
+        else
+        {
+            AICharacterDis2 = Vector3.Distance(character[1].position, AIObject.transform.position);
+        }
+        if (c2Caught == true)
+        {
+            AICharacterDis3 = 1000;
+            Destroy(pencil);
+        }
+        else
+        {
+            AICharacterDis3 = Vector3.Distance(character[2].position, AIObject.transform.position);
+        }
 
-        AICharacterDis = Vector3.Distance(character[0].position, AIObject.transform.position);
-        AICharacterDis2 = Vector3.Distance(character[1].position, AIObject.transform.position);
-        AICharacterDis3 = Vector3.Distance(character[2].position, AIObject.transform.position);
+        if (characterCaughtCounter == 3)
+        {
+            TransitionToState(ws);
+        }
 
         finalValueDis = Mathf.Min(AICharacterDis, AICharacterDis2, AICharacterDis3);
 
-        if (finalValueDis == AICharacterDis && desicionMade == false)
-        {
-            desicionMade = true;
-            aiEndPoint.position = character[0].position;
-            StartCoroutine(DesicionTime());
-        }
-        else if (finalValueDis == AICharacterDis2 && desicionMade == false)
-        {
-            desicionMade = true;
-            aiEndPoint.position = character[1].position;
-            StartCoroutine(DesicionTime());
-        }
-        else if (finalValueDis == AICharacterDis3 && desicionMade == false)
-        {
-            desicionMade = true;
-            aiEndPoint.position = character[2].position;
-            StartCoroutine(DesicionTime());
-        }
-
-        agent.SetDestination(aiEndPoint.position);
+        currentState.UpdateState(this);
     }
 
-    IEnumerator DesicionTime()
+    private void OnCollisionEnter(Collision collision)
     {
-        yield return new WaitForSeconds(5);
-        desicionMade = false;
+        if (collision.gameObject.CompareTag("Rubber"))
+        {
+            cCaught = true;
+        }
+        if (collision.gameObject.CompareTag("Ruler"))
+        {
+            c1Caught = true;
+        }
+        if (collision.gameObject.CompareTag("Pencil"))
+        {
+            c2Caught = true;
+        }
+    }
+
+    public void TransitionToState(AIStates state)
+    {
+        currentState = state;
+        currentState.EnterState(this);
     }
 }
