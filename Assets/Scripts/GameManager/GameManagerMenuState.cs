@@ -14,12 +14,12 @@ public class GameManagerMenuState : GameManagerBaseState
     public override void EnterState() 
     {
         //Ctx._InMenu= true;
-        foreach(CinemachineVirtualCamera camera in Ctx.Cameras)
-        {
-            camera.Priority = 10;
-        }
-        Ctx.menuCamera.Priority = 11;
-        Ctx.menuManager.GoToMenu();
+        //foreach(CinemachineVirtualCamera camera in Ctx.Cameras)
+        //{
+        //    camera.Priority = 10;
+        //}
+        //Ctx.menuCamera.Priority = 11;
+        //Ctx.menuManager.GoToMenu();
         //AudioManager.Instance.DialogueSource.Stop();
         //AudioManager.Instance.PlayMusic("Menu Music");
     }

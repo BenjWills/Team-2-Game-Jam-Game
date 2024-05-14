@@ -46,7 +46,7 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""Ability"",
                     ""type"": ""Button"",
                     ""id"": ""67af2c17-2e8f-4742-98a0-5928ac0e2ca0"",
                     ""expectedControlType"": ""Button"",
@@ -58,6 +58,15 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
                     ""name"": ""Switch"",
                     ""type"": ""Button"",
                     ""id"": ""a1d65b7a-6ce2-4b2c-936d-23d190703bb7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""d787a9f3-9e9c-4b14-8c11-ce13adbe58e3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -81,7 +90,7 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Interact"",
+                    ""action"": ""Ability"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -92,7 +101,7 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Interact"",
+                    ""action"": ""Ability"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -227,6 +236,28 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c90652c5-2e8e-46f6-ad92-1987ae061486"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31142192-c03e-4af7-89ae-9b9f5ad0cbb5"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -237,8 +268,9 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
         m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
         m_Main_Movement = m_Main.FindAction("Movement", throwIfNotFound: true);
         m_Main_Turn = m_Main.FindAction("Turn", throwIfNotFound: true);
-        m_Main_Interact = m_Main.FindAction("Interact", throwIfNotFound: true);
+        m_Main_Ability = m_Main.FindAction("Ability", throwIfNotFound: true);
         m_Main_Switch = m_Main.FindAction("Switch", throwIfNotFound: true);
+        m_Main_Interact = m_Main.FindAction("Interact", throwIfNotFound: true);
         m_Main_MenuOpenClose = m_Main.FindAction("MenuOpenClose", throwIfNotFound: true);
     }
 
@@ -303,8 +335,9 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
     private List<IMainActions> m_MainActionsCallbackInterfaces = new List<IMainActions>();
     private readonly InputAction m_Main_Movement;
     private readonly InputAction m_Main_Turn;
-    private readonly InputAction m_Main_Interact;
+    private readonly InputAction m_Main_Ability;
     private readonly InputAction m_Main_Switch;
+    private readonly InputAction m_Main_Interact;
     private readonly InputAction m_Main_MenuOpenClose;
     public struct MainActions
     {
@@ -312,8 +345,9 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
         public MainActions(@PlayerInputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Main_Movement;
         public InputAction @Turn => m_Wrapper.m_Main_Turn;
-        public InputAction @Interact => m_Wrapper.m_Main_Interact;
+        public InputAction @Ability => m_Wrapper.m_Main_Ability;
         public InputAction @Switch => m_Wrapper.m_Main_Switch;
+        public InputAction @Interact => m_Wrapper.m_Main_Interact;
         public InputAction @MenuOpenClose => m_Wrapper.m_Main_MenuOpenClose;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
@@ -330,12 +364,15 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
             @Turn.started += instance.OnTurn;
             @Turn.performed += instance.OnTurn;
             @Turn.canceled += instance.OnTurn;
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
+            @Ability.started += instance.OnAbility;
+            @Ability.performed += instance.OnAbility;
+            @Ability.canceled += instance.OnAbility;
             @Switch.started += instance.OnSwitch;
             @Switch.performed += instance.OnSwitch;
             @Switch.canceled += instance.OnSwitch;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
             @MenuOpenClose.started += instance.OnMenuOpenClose;
             @MenuOpenClose.performed += instance.OnMenuOpenClose;
             @MenuOpenClose.canceled += instance.OnMenuOpenClose;
@@ -349,12 +386,15 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
             @Turn.started -= instance.OnTurn;
             @Turn.performed -= instance.OnTurn;
             @Turn.canceled -= instance.OnTurn;
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
+            @Ability.started -= instance.OnAbility;
+            @Ability.performed -= instance.OnAbility;
+            @Ability.canceled -= instance.OnAbility;
             @Switch.started -= instance.OnSwitch;
             @Switch.performed -= instance.OnSwitch;
             @Switch.canceled -= instance.OnSwitch;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
             @MenuOpenClose.started -= instance.OnMenuOpenClose;
             @MenuOpenClose.performed -= instance.OnMenuOpenClose;
             @MenuOpenClose.canceled -= instance.OnMenuOpenClose;
@@ -379,8 +419,9 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnTurn(InputAction.CallbackContext context);
-        void OnInteract(InputAction.CallbackContext context);
+        void OnAbility(InputAction.CallbackContext context);
         void OnSwitch(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
         void OnMenuOpenClose(InputAction.CallbackContext context);
     }
 }

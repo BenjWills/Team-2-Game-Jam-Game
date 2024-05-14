@@ -19,6 +19,7 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void UpdateState() 
     {
+
         CheckSwitchStates();
         if (Ctx.moveDirection.x * Ctx.movementSpeed * Time.deltaTime != 0||Ctx.moveDirection.z * Ctx.movementSpeed * Time.deltaTime != 0)
         {
@@ -32,6 +33,8 @@ public class PlayerWalkState : PlayerBaseState
                 moveSoundTimer -= Time.deltaTime;
             }
         }
+        ApplyPlayerInput();
+        ApplyMovement();
     }
     public override void ExitState() { }
     public override void CheckSwitchStates() 
@@ -45,6 +48,7 @@ public class PlayerWalkState : PlayerBaseState
             SwitchState(Factory.Idle());
         }
         SetSubState(Factory.Interact());
+        InitializeCharacterState();
     }
     public override void InitializeSubState() 
     {
@@ -52,14 +56,19 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void InitializeCharacterState()
     {
-
+        if (Ctx._IsRubber)
+        {
+            SetCharacterState(Factory.Rubber());
+        }
+        else if (Ctx._IsRuler)
+        {
+            SetCharacterState(Factory.Ruler());
+        }
+        else if (Ctx._IsPencil)
+        {
+            SetCharacterState(Factory.Pencil());
+        }
     }
-    private void DefaultControls()
-    {
-        Ctx.moveDirection = Ctx.cameraObject.forward * Ctx.vertInput;
-        Ctx.moveDirection = Ctx.moveDirection + Ctx.cameraObject.right * Ctx.horInput;
-    }
-
     private void ApplyPlayerInput()
     {
         Ctx.moveDirection = Ctx.cameraObject.forward * Ctx.vertInput;
@@ -68,7 +77,6 @@ public class PlayerWalkState : PlayerBaseState
     }
     private void ApplyMovement()
     {
-        Ctx.moveDirection.y = 0;
-        Ctx.characterController.Move(Ctx.moveDirection * Ctx.movementSpeed * Time.deltaTime);
+        Ctx.characterControllers[Ctx.CharacterType].Move(Ctx.moveDirection * Ctx.movementSpeed * Time.deltaTime);
     }
 }

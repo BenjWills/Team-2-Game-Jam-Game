@@ -10,7 +10,7 @@ public class CinemachinePOVExtension : CinemachineExtension
     [SerializeField] private float clampAngleDown = 60f;
     [SerializeField] private GameManagerStateMachine gameManager;
     PlayerStateMachine playerStateMachine;
-    GameObject CameraTrack;
+    [SerializeField] GameObject CameraTrack;
     Vector3 startingRotation;
 
     protected override void Awake()
@@ -21,10 +21,6 @@ public class CinemachinePOVExtension : CinemachineExtension
         startingRotation = transform.localRotation.eulerAngles;
     }
 
-    private void Start()
-    {
-        CameraTrack = gameManager._CameraTrack;
-    }
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {
         if (vcam.Follow&&gameManager._PlayingGame)
