@@ -62,10 +62,12 @@ public class PlayerStateMachine : MonoBehaviour
     public float cameraInputX;
     public float cameraInputY;
     public float _SensitivityMultiplier;
-    [Header("Interact Button")]
-    public bool IsInteractPressed;
+    [Header("Ability Button")]
+    public bool IsAbilityPressed;
     [Header("Switch Button")]
     public bool IsSwitchPressed;
+    [Header("Interact Button")]
+    public bool IsInteractPressed;
     [Header("Menu Open Close Button")]
     public bool IsMenuOpenClosePressed;
 
@@ -102,6 +104,7 @@ public class PlayerStateMachine : MonoBehaviour
         currentState.UpdateStates();
         CheckCurrentCharacter();
         IsInteractPressed = false;
+        IsAbilityPressed = false;
         TurnSpritesToCamera();
     }
 
@@ -164,7 +167,6 @@ public class PlayerStateMachine : MonoBehaviour
             camera.Priority = 10;
             if (camIndex == CharacterType)
             {
-                Debug.Log(camera);
                 camera.Priority = 11;
             }
             camIndex++;
@@ -211,6 +213,7 @@ public class PlayerStateMachine : MonoBehaviour
         PlayerInput.Main.Movement.canceled += OnMove;
         PlayerInput.Main.Turn.performed += OnTurn;
         PlayerInput.Main.Turn.canceled += OnTurn;
+        PlayerInput.Main.Ability.started += OnAbility;
         PlayerInput.Main.Interact.started += OnInteract;
         PlayerInput.Main.Switch.started += OnSwitch;
         PlayerInput.Main.MenuOpenClose.started += OnMenuOpenClose;
@@ -224,6 +227,7 @@ public class PlayerStateMachine : MonoBehaviour
         PlayerInput.Main.Movement.canceled -= OnMove;
         PlayerInput.Main.Turn.performed -= OnTurn;
         PlayerInput.Main.Turn.canceled -= OnTurn;
+        PlayerInput.Main.Ability.started -= OnAbility;
         PlayerInput.Main.Interact.started -= OnInteract;
         PlayerInput.Main.Switch.started -= OnSwitch;
         PlayerInput.Main.MenuOpenClose.started += OnMenuOpenClose;
@@ -239,6 +243,10 @@ public class PlayerStateMachine : MonoBehaviour
         cameraInput = ctx.ReadValue<Vector2>();
     }
 
+    private void OnAbility(InputAction.CallbackContext ctx)
+    {
+        IsAbilityPressed = ctx.ReadValueAsButton();
+    }
     private void OnInteract(InputAction.CallbackContext ctx)
     {
         IsInteractPressed = ctx.ReadValueAsButton();

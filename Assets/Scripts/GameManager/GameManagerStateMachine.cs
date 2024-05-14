@@ -38,6 +38,7 @@ public class GameManagerStateMachine : MonoBehaviour
     private void Start()
     {
         _PlayingGame = true;
+        _CanMove = true;
         menuManager = GameObject.FindObjectOfType<MenuManager>();
         //audioManager = GameObject.FindObjectOfType<AudioManager>();
         menuCamera = GameObject.FindGameObjectWithTag("MenuCamera").GetComponent<CinemachineVirtualCamera>();
@@ -55,14 +56,10 @@ public class GameManagerStateMachine : MonoBehaviour
     private void Update()
     {
         currentState.UpdateStates();
-        if (_Paused || !_PlayingGame)
-        {
-            _CanMove = false;
-        }
-        else
-        {
-            _CanMove = true;
-        }
+        //if (_Paused || !_PlayingGame)
+        //{
+        //    _CanMove = false;
+        //}
         //if (!_CanMove ) { }
     }
 }
