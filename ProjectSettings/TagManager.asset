@@ -8,6 +8,7 @@ TagManager:
   - RulerCamera
   - PencilCamera
   - MenuCamera
+  - Interact
   layers:
   - Default
   - TransparentFX

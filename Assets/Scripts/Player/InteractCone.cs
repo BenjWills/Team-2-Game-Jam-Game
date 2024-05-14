@@ -10,7 +10,7 @@ public class InteractCone : MonoBehaviour
     public bool active;
     [Range(0,2)]
     [SerializeField] private int characterNumber;
-    private List<GameObject> InCone;
+    private List<GameObject> InCone = new();
     private void Start()
     {
         playerStateMachine = FindObjectOfType<PlayerStateMachine>();
