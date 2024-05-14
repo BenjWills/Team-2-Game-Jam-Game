@@ -1954,7 +1954,9 @@ MonoBehaviour:
   gameScene: AI
   mainMenu: {fileID: 289535306}
   settingsMenu: {fileID: 172754030}
+
   settingsActive: 0
+
 --- !u!4 &1811817103
 Transform:
   m_ObjectHideFlags: 0
