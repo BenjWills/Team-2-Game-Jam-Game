@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4479,12 +4479,13 @@ MonoBehaviour:
   menuManager: {fileID: 0}
   settingsMenu: {fileID: 0}
   rebindUI: {fileID: 0}
-  moveDirection: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
   CharacterAnimators:
   - {fileID: 1159195341}
   - {fileID: 229690999}
   - {fileID: 1472896397}
+  moveDirection: {x: 0, y: 0, z: 0}
+  movementSpeed: 10
+  _Walking: 0
   rayLength: 2
   layerMaskInteract:
     serializedVersion: 2
@@ -4492,6 +4493,7 @@ MonoBehaviour:
   _InteractablesInRubber: []
   _InteractablesInRuler: []
   _InteractablesInPencil: []
+  _Actioning: 0
   CharacterType: 0
   _IsRubber: 0
   _IsRuler: 0
