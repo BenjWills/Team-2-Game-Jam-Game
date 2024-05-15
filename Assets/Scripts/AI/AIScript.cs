@@ -67,6 +67,7 @@ public class AIScript : MonoBehaviour
     {
         TrackPlayer();
         CheckForActiveDoor();
+        CheckIfArrested();
         if (playerStateMachine._RubberArrested)
         {
             AICharacterDis = 1000;
@@ -142,8 +143,8 @@ public class AIScript : MonoBehaviour
         if (collidedObject.gameObject == rubber)
         {
             playerStateMachine._RubberArrested = true;
-            gameManager.CharactersCaught++;
             finishRubber = true;
+            gameManager.CharactersCaught++;
             if (playerStateMachine.CharacterType == 0)
             {
                 playerStateMachine.ShouldChangeCharacter = true;
@@ -152,8 +153,8 @@ public class AIScript : MonoBehaviour
         }
         if (collidedObject.gameObject == ruler)
         {
-            finishRuler = true;
             playerStateMachine._RulerArrested = true;
+            finishRuler = true;
             gameManager.CharactersCaught++;
             if (playerStateMachine.CharacterType == 1)
             {
@@ -163,8 +164,8 @@ public class AIScript : MonoBehaviour
         }
         if (collidedObject.gameObject == pencil)
         {
-            finishPencil = true;
             playerStateMachine._PencilArrested = true;
+            finishPencil = true;
             gameManager.CharactersCaught++;
             if (playerStateMachine.CharacterType == 2)
             {
@@ -172,16 +173,29 @@ public class AIScript : MonoBehaviour
                 playerStateMachine.ForceSwitch();
             }
         }
-        
     }   
 
     private void CheckIfArrested()
     {
-        if (collidedObject.transform.position != new Vector3(100, 0, 100))
+        if(collidedObject!=null)
         {
-            if (finishRubber && playerStateMachine.CharacterType != 0)
+            if (collidedObject.transform.position != new Vector3(100, 0, 100))
             {
-                collidedObject.transform.position = new Vector3(100, 0, 100);
+                if (finishRubber && playerStateMachine.CharacterType != 0)
+                {
+                    collidedObject.transform.position = new Vector3(100, 0, 100);
+                    finishRubber = false;
+                }
+                if (finishRuler && playerStateMachine.CharacterType != 1)
+                {
+                    collidedObject.transform.position = new Vector3(100, 0, 100);
+                    finishRuler = false;
+                }
+                if (finishPencil && playerStateMachine.CharacterType != 2)
+                {
+                    collidedObject.transform.position = new Vector3(100, 0, 100);
+                    finishPencil = false;
+                }
             }
         }
     }
@@ -195,6 +209,10 @@ public class AIScript : MonoBehaviour
             {
                 doorScript.Unlocking = true;
             }
+        }
+        if (!doorScript.open&&!doorScript._Locked)
+        {
+            doorScript.open= true;
         }
     }
 

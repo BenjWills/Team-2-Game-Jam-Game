@@ -14,6 +14,7 @@ public class PlayerStateMachine : MonoBehaviour
     public Transform[] _PlayerTrack;
     public Animator CameraFadeAnimator;
     public GameManagerStateMachine gameManager;
+    public AIScript aIScript;
     public MenuManager menuManager;
     public SettingsMenu settingsMenu;
     public RebindUI rebindUI;
@@ -43,6 +44,9 @@ public class PlayerStateMachine : MonoBehaviour
     public bool FinishTransform;
     public List<CharacterController> characterControllers;
     public SpriteRenderer[] characterSprites;
+
+
+
     public int amountOfArrested;
 
     [Header("Rubber")]

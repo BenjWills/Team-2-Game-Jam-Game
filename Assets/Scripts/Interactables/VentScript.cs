@@ -13,6 +13,8 @@ public class VentScript : MonoBehaviour
     [SerializeField] SpriteRenderer VentSprite;
 
     PlayerStateMachine playerStateMachine;
+    GameManagerStateMachine gameManager;
+
 
     private void Awake()
     {
@@ -21,6 +23,7 @@ public class VentScript : MonoBehaviour
         ventCollider = GetComponent<BoxCollider>();
         ventCollider.enabled = false;
         playerStateMachine = FindObjectOfType<PlayerStateMachine>();
+        gameManager = FindObjectOfType<GameManagerStateMachine>();
     }
 
     private void Start()
@@ -47,8 +50,27 @@ public class VentScript : MonoBehaviour
 
     public void VentInteracted()
     {
-        Debug.Log("I AM A VENT");
-        Debug.Log("Finished Game");
-        ventCollider.enabled = false;
+        gameManager.CharactersEscaped++;
+        if (gameManager.CharactersEscaped+gameManager.CharactersCaught != 3)
+        {
+            switch (playerStateMachine.CharacterType)
+            {
+                case 0:
+                    playerStateMachine._RubberTaken = true;
+                    break;
+                case 1:
+                    playerStateMachine._RulerTaken = true;
+                    break;
+                case 2:
+                    playerStateMachine._PencilTaken = true;
+                    break;
+            }
+            playerStateMachine.ShouldChangeCharacter = true;
+            playerStateMachine.ForceSwitch();
+        }
+        else
+        {
+            playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
+        }
     }
 }

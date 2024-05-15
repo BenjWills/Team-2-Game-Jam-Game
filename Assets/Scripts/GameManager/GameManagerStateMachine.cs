@@ -25,6 +25,7 @@ public class GameManagerStateMachine : MonoBehaviour
     public GameObject CopPrefab;
     public Transform CopSummonSpot;
 
+    public int CharactersEscaped;
     public int CharactersCaught;
 
 
@@ -112,6 +113,7 @@ public class GameManagerStateMachine : MonoBehaviour
             CopSummoned = true;
             TaskText.text = "Defend the vault from the cop!";
             //summon cop
+            playerStateMachine.aIScript = FindObjectOfType<AIScript>();
         }
     }
     private void PauseTimerForSacrifice()
@@ -128,7 +130,7 @@ public class GameManagerStateMachine : MonoBehaviour
         }
         else
         {
-            _GameplayTimer += Time.deltaTime;
+            _GameplayTimer += Time.deltaTime*5;
         }
     }
     private void TimerEndReached()
@@ -137,6 +139,9 @@ public class GameManagerStateMachine : MonoBehaviour
         {
             if (Treasure!=null)
             {
+                playerStateMachine._RubberTaken = false;
+                playerStateMachine._RulerTaken = false;
+                playerStateMachine._PencilTaken = false;
                 Destroy(Treasure);
             }
             var VentScript = FindObjectOfType<VentScript>();
