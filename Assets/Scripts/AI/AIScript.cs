@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,11 +10,13 @@ public class AIScript : MonoBehaviour
     public readonly RubberFollowState rfs = new RubberFollowState();
     public readonly PencilFollowState pfs = new PencilFollowState();
     public readonly RulerFollowState rufs = new RulerFollowState();
+    public readonly DoorFollowState dfs = new DoorFollowState();
     public readonly AIWinState ws = new AIWinState();
 
     public NavMeshAgent agent;
     PlayerStateMachine playerStateMachine;
 
+    GameObject collidedObject;
 
     private GameObject AIObject;
     public GameObject rubber;
@@ -23,16 +26,25 @@ public class AIScript : MonoBehaviour
     public Transform aiEndPoint;
     public List<Transform> character;
 
+    BoxCollider copCollider;
+
     public float AICharacterDis;
     public float AICharacterDis2;
     public float AICharacterDis3;
     public float finalValueDis;
     public float characterCaughtCounter;
 
+    public bool Unlocking;
+    DoorScript doorScript;
+
     private void Awake()
     {
         playerStateMachine = FindObjectOfType<PlayerStateMachine>();
         AIObject = gameObject;
+        rubber = GameObject.FindGameObjectWithTag("Rubber");
+        ruler = GameObject.FindGameObjectWithTag("Ruler");
+        pencil = GameObject.FindGameObjectWithTag("Pencil");
+        aiEndPoint = GameObject.FindGameObjectWithTag("EndPoint").transform;
         character.Add(rubber.transform);
         character.Add(ruler.transform);
         character.Add(pencil.transform);
@@ -48,6 +60,7 @@ public class AIScript : MonoBehaviour
     void Update()
     {
         TrackPlayer();
+        CheckForActiveDoor();
         if (playerStateMachine._RubberArrested)
         {
             AICharacterDis = 1000;
@@ -86,18 +99,50 @@ public class AIScript : MonoBehaviour
         currentState.UpdateState(this);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void CheckForActiveDoor()
     {
-        if (collision.gameObject == rubber)
+        if (doorScript!=null)
+        {
+            Unlocking = doorScript.Unlocking;
+            if (!doorScript.Unlocking)
+            {
+                doorScript = null;
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        var mask = playerStateMachine.layerMaskInteract.value;
+        if (Vector3.Distance(transform.position,collision.gameObject.transform.position) <= 2)
+        {
+            if (!Physics.Linecast(transform.position, collision.gameObject.transform.position, mask))
+            {
+                collidedObject = collision.gameObject;
+                CheckForCriminals();
+                if (collidedObject.CompareTag("Interact"))
+                {
+                    var InteractScript = collidedObject.GetComponent<InteractBaseScript>();
+                    if (InteractScript._InteractType == "Door")
+                    {
+                        AgainstDoor();
+                    }
+                }
+            } 
+        } 
+    }
+    private void CheckForCriminals()
+    {
+        if (collidedObject.gameObject == rubber)
         {
             playerStateMachine._RubberArrested = true;
-            if (playerStateMachine.CharacterType==0)
+            if (playerStateMachine.CharacterType == 0)
             {
                 playerStateMachine.ShouldChangeCharacter = true;
                 playerStateMachine.ForceSwitch();
             }
         }
-        if (collision.gameObject == ruler)
+        if (collidedObject.gameObject == ruler)
         {
             playerStateMachine._RulerArrested = true;
             if (playerStateMachine.CharacterType == 1)
@@ -106,7 +151,7 @@ public class AIScript : MonoBehaviour
                 playerStateMachine.ForceSwitch();
             }
         }
-        if (collision.gameObject == pencil)
+        if (collidedObject.gameObject == pencil)
         {
             playerStateMachine._PencilArrested = true;
             if (playerStateMachine.CharacterType == 2)
@@ -117,22 +162,41 @@ public class AIScript : MonoBehaviour
         }
     }
 
+    private void AgainstDoor()
+    {
+        doorScript = collidedObject.GetComponent<DoorScript>();
+        if (doorScript._Locked)
+        {
+            if (doorScript._RubberLocked||doorScript._PencilLocked)
+            {
+                doorScript.Unlocking = true;
+            }
+        }
+    }
+
     private void TrackPlayer()
     {
-        if (finalValueDis == AICharacterDis)
+        if (!Unlocking)
         {
-            aiEndPoint.position = character[0].position;
-            TransitionToState(rfs);
+            if (finalValueDis == AICharacterDis)
+            {
+                aiEndPoint.position = character[0].position;
+                TransitionToState(rfs);
+            }
+            else if (finalValueDis == AICharacterDis2)
+            {
+                aiEndPoint.position = character[1].position;
+                TransitionToState(rufs);
+            }
+            else if (finalValueDis == AICharacterDis3)
+            {
+                aiEndPoint.position = character[2].position;
+                TransitionToState(pfs);
+            }
         }
-        else if (finalValueDis == AICharacterDis2)
+        else
         {
-            aiEndPoint.position = character[1].position;
-            TransitionToState(rufs);
-        }
-        else if (finalValueDis == AICharacterDis3)
-        {
-            aiEndPoint.position = character[2].position;
-            TransitionToState(pfs);
+            TransitionToState(dfs);
         }
     }
 

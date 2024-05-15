@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DoorScript : MonoBehaviour
 {
@@ -8,14 +9,15 @@ public class DoorScript : MonoBehaviour
     [SerializeField] GameObject DoorSprite;
     Animator doorAnim;
     [SerializeField] GameObject DoorScale;
+    [SerializeField] GameObject ScaleAid;
     public bool open;
     public bool displayUnlocked;
     bool finishedClosing;
     bool AbilityTriggered;
     public bool _Locked;
-    bool _RubberLocked;
+    public bool _RubberLocked;
     bool _RulerLocked;
-    bool _PencilLocked;
+    public bool _PencilLocked;
 
     public bool Unlocking;
     public float UnlockTimer;
@@ -24,6 +26,8 @@ public class DoorScript : MonoBehaviour
     [SerializeField] float PencilTimer = 5f;
     [SerializeField] float RubberTimer = 10f;
     [SerializeField] float RulerTimer = 20f;
+
+    NavMeshObstacle obstacle;
 
     PlayerStateMachine playerStateMachine;
     GameManagerStateMachine gameManager;
@@ -37,6 +41,7 @@ public class DoorScript : MonoBehaviour
         playerStateMachine = FindObjectOfType<PlayerStateMachine>();
         gameManager = FindObjectOfType<GameManagerStateMachine>();
         doorAnim = DoorSprite.GetComponent<Animator>();
+        obstacle = GetComponent<NavMeshObstacle>();
     }
 
     private void Update()
@@ -85,6 +90,7 @@ public class DoorScript : MonoBehaviour
             {
                 MaxTime = PencilTimer;
             }
+            Debug.Log("Unlocking");
             if (UnlockTimer>=MaxTime)
             {
                 UnlockDoor();
@@ -102,6 +108,8 @@ public class DoorScript : MonoBehaviour
     {
         if (_RulerLocked)
         {
+            obstacle.enabled = true;
+            ScaleAid.SetActive(true);
             if (RulerUnlockTimer == 0)
             {
                 DoorScale.transform.localScale = DoorScale.transform.localScale * .975f;
@@ -125,6 +133,8 @@ public class DoorScript : MonoBehaviour
         }
         else
         {
+            obstacle.enabled = false;
+            ScaleAid.SetActive(false);
             RulerUnlockTimer = 0;
         }
     }

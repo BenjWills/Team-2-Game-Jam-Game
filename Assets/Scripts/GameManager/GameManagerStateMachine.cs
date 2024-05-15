@@ -21,6 +21,8 @@ public class GameManagerStateMachine : MonoBehaviour
     public bool _PlayingGame; //checks if the game is being played or not (will be in menu if not being played)
     public bool _CanMove;
     public Vector3 playerPosition; //*
+    public GameObject CopPrefab;
+    public Transform CopSummonSpot;
 
     public TMP_Text TaskText;
 
@@ -29,6 +31,9 @@ public class GameManagerStateMachine : MonoBehaviour
     public Image TimerImage;
     public bool CopSummoned;
     public bool CharacterSacrificed;
+
+    public GameObject Treasure;
+    public Animator VaultDoor;
 
     [Header("Cinemachine")]
     public CinemachineVirtualCamera menuCamera;
@@ -63,6 +68,7 @@ public class GameManagerStateMachine : MonoBehaviour
         currentState = states.Menu();
         currentState.EnterState();
         _GameplayTimer = 0;
+        Treasure = GameObject.FindGameObjectWithTag("Treasure");
     }
     private void Update()
     {
@@ -91,6 +97,9 @@ public class GameManagerStateMachine : MonoBehaviour
     {
         if (_GameplayTimer >= 30 && !CopSummoned)
         {
+            Vector3 pos = new Vector3(0f, 0f, 14.5f);
+            Vector3 rot = new Vector3(0f, 0f, 180f);
+            Instantiate(CopPrefab,pos,Quaternion.Euler(rot));
             CopSummoned = true;
             TaskText.text = "Defend the vault from the cop!";
             //summon cop
@@ -103,19 +112,24 @@ public class GameManagerStateMachine : MonoBehaviour
             var VaultScript = FindObjectOfType<VaultScript>();
             if (VaultScript.SacrificeCollider.enabled == false)
             {
+                VaultDoor.SetTrigger("vaultOpening");
                 TaskText.text = "Make one character collect treasure!";
                 VaultScript.TimerReached();
             }
         }
         else
         {
-            _GameplayTimer += Time.deltaTime*10;
+            _GameplayTimer += Time.deltaTime;
         }
     }
     private void TimerEndReached()
     {
         if (_GameplayTimer >= _MaxTimer)
         {
+            if (Treasure!=null)
+            {
+                Destroy(Treasure);
+            }
             var VentScript = FindObjectOfType<VentScript>();
             VentScript.VentActivated();
             TaskText.text = "Get out!";
