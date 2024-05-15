@@ -116,6 +116,8 @@ public class GameManagerStateMachine : MonoBehaviour
     {
         if (_GameplayTimer >= _MaxTimer)
         {
+            var VentScript = FindObjectOfType<VentScript>();
+            VentScript.VentActivated();
             TaskText.text = "Get out!";
             _GameplayTimer = _MaxTimer;
         }

@@ -102,6 +102,9 @@ public class PlayerInteractState : PlayerBaseState
             case "Vault":
                 InteractWithVault();
                 break;
+            case "Vent":
+                InteractWithVent();
+                break;
         }
     }
 
@@ -132,6 +135,11 @@ public class PlayerInteractState : PlayerBaseState
         VaultScript.SacrificeCharacter();
     }
 
+    private void InteractWithVent()
+    {
+        var VentScript = currentInteractable.GetComponent<VentScript>();
+        VentScript.VentInteracted();
+    }
     private void AbilityOnDoor()
     {
         var DoorScript = currentInteractable.GetComponent<DoorScript>();
