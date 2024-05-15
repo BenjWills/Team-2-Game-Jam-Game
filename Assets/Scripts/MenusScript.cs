@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class MenusScript : MonoBehaviour
 {
@@ -12,16 +14,57 @@ public class MenusScript : MonoBehaviour
     private bool settingsActive;
     private bool creditsActive;
 
+    public AudioMixer mainMixer;
+
+    private Resolution[] screenRes;
+    public Dropdown resDropdown;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        screenRes = Screen.resolutions;
+
+        resDropdown.ClearOptions();
+
+        List<string> options = new List<string>();
+
+        int currentResIndex = 0;
+        for (int i = 0; i < screenRes.Length; i++)
+        {
+            string option = screenRes[i].width + " x " + screenRes[i].height;
+            options.Add(option);
+
+            if (screenRes[i].width == Screen.currentResolution.width && screenRes[i].height == Screen.currentResolution.height)
+            {
+                currentResIndex = i;
+            }
+        }
+
+        resDropdown.AddOptions(options);
+        resDropdown.value = currentResIndex;
+        resDropdown.RefreshShownValue();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SetVolume(float volume)
+    {
+        mainMixer.SetFloat("MainVolume", volume);
+    }
+
+    public void SetFullscreen(bool isFullscreen)
+    {
+        Screen.fullScreen = isFullscreen;
+    }
+
+    public void SetResolution(int resIndex)
+    {
+        Resolution resolution = screenRes[resIndex];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
     public void StartButton()
