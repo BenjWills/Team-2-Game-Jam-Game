@@ -124,7 +124,7 @@ public class MenusScript : MonoBehaviour
     }
     public void JanaButton()
     {
-        Application.OpenURL("");
+        Application.OpenURL("https://janaradulaski.itch.io/");
     }
 
     public void QuitButton()
