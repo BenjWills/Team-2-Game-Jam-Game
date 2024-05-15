@@ -15,9 +15,17 @@ public class MenusScript : MonoBehaviour
     private bool creditsActive;
 
     public AudioMixer mainMixer;
+    public Slider volumeSlider;
+
+    private bool isFullscreenPP;
+    public Toggle fullscreenToggle;
 
     private Resolution[] screenRes;
+    private Resolution currentRes;
     public Dropdown resDropdown;
+
+    public float sensitivity;
+    public Slider sensitivitySlider;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +51,11 @@ public class MenusScript : MonoBehaviour
         resDropdown.AddOptions(options);
         resDropdown.value = currentResIndex;
         resDropdown.RefreshShownValue();
+
+        volumeSlider.value = PlayerPrefs.GetFloat("Volume");
+        sensitivitySlider.value = PlayerPrefs.GetFloat("Sensitivity");
+        fullscreenToggle.isOn = (PlayerPrefs.GetInt("Fullscreen")!= 0);
+        resDropdown.value = PlayerPrefs.GetInt("Resolution");
     }
 
     // Update is called once per frame
@@ -54,17 +67,27 @@ public class MenusScript : MonoBehaviour
     public void SetVolume(float volume)
     {
         mainMixer.SetFloat("MainVolume", volume);
+        PlayerPrefs.SetFloat("Volume", volume);
     }
 
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
+        PlayerPrefs.SetInt("Fullscreen", (isFullscreen ? 1 : 0));
     }
 
     public void SetResolution(int resIndex)
     {
-        Resolution resolution = screenRes[resIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        currentRes = screenRes[resIndex];
+        Screen.SetResolution(currentRes.width, currentRes.height, Screen.fullScreen);
+        PlayerPrefs.SetInt("Resolution", resIndex);
+    }
+
+    public void SetSensitivity(float tempSensitivity)
+    {
+        sensitivity = tempSensitivity;
+        Debug.Log(tempSensitivity);
+        PlayerPrefs.SetFloat("Sensitivity", tempSensitivity);
     }
 
     public void StartButton()
@@ -120,7 +143,7 @@ public class MenusScript : MonoBehaviour
     }
     public void RenaeButton()
     {
-        Application.OpenURL("");
+        Application.OpenURL("https://sergioisntreal.itch.io/");
     }
     public void JanaButton()
     {

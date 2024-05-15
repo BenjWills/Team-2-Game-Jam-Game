@@ -4594,7 +4594,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1811817102}
+        m_TargetAssemblyTypeName: MenusScript, Assembly-CSharp
+        m_MethodName: SetSensitivity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1490513607
 GameObject:
   m_ObjectHideFlags: 0
@@ -5656,7 +5668,11 @@ MonoBehaviour:
   settingsMenu: {fileID: 172754030}
   creditsMenu: {fileID: 22764210}
   mainMixer: {fileID: 24100000, guid: 9b422f222256bb74bb7876c7b034947f, type: 2}
+  volumeSlider: {fileID: 250213756}
+  fullscreenToggle: {fileID: 886982599}
   resDropdown: {fileID: 1648843023}
+  sensitivity: 0
+  sensitivitySlider: {fileID: 1481239990}
 --- !u!4 &1811817103
 Transform:
   m_ObjectHideFlags: 0
@@ -6977,7 +6993,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1811817102}
         m_TargetAssemblyTypeName: MenusScript, Assembly-CSharp
-        m_MethodName: BenWButton
+        m_MethodName: BenjaminButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
