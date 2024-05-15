@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class MenusScript : MonoBehaviour
 {
@@ -12,16 +14,80 @@ public class MenusScript : MonoBehaviour
     private bool settingsActive;
     private bool creditsActive;
 
+    public AudioMixer mainMixer;
+    public Slider volumeSlider;
+
+    private bool isFullscreenPP;
+    public Toggle fullscreenToggle;
+
+    private Resolution[] screenRes;
+    private Resolution currentRes;
+    public Dropdown resDropdown;
+
+    public float sensitivity;
+    public Slider sensitivitySlider;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        screenRes = Screen.resolutions;
+
+        resDropdown.ClearOptions();
+
+        List<string> options = new List<string>();
+
+        int currentResIndex = 0;
+        for (int i = 0; i < screenRes.Length; i++)
+        {
+            string option = screenRes[i].width + " x " + screenRes[i].height;
+            options.Add(option);
+
+            if (screenRes[i].width == Screen.currentResolution.width && screenRes[i].height == Screen.currentResolution.height)
+            {
+                currentResIndex = i;
+            }
+        }
+
+        resDropdown.AddOptions(options);
+        resDropdown.value = currentResIndex;
+        resDropdown.RefreshShownValue();
+
+        volumeSlider.value = PlayerPrefs.GetFloat("Volume");
+        sensitivitySlider.value = PlayerPrefs.GetFloat("Sensitivity");
+        fullscreenToggle.isOn = (PlayerPrefs.GetInt("Fullscreen")!= 0);
+        resDropdown.value = PlayerPrefs.GetInt("Resolution");
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SetVolume(float volume)
+    {
+        mainMixer.SetFloat("MainVolume", volume);
+        PlayerPrefs.SetFloat("Volume", volume);
+    }
+
+    public void SetFullscreen(bool isFullscreen)
+    {
+        Screen.fullScreen = isFullscreen;
+        PlayerPrefs.SetInt("Fullscreen", (isFullscreen ? 1 : 0));
+    }
+
+    public void SetResolution(int resIndex)
+    {
+        currentRes = screenRes[resIndex];
+        Screen.SetResolution(currentRes.width, currentRes.height, Screen.fullScreen);
+        PlayerPrefs.SetInt("Resolution", resIndex);
+    }
+
+    public void SetSensitivity(float tempSensitivity)
+    {
+        sensitivity = tempSensitivity;
+        Debug.Log(tempSensitivity);
+        PlayerPrefs.SetFloat("Sensitivity", tempSensitivity);
     }
 
     public void StartButton()
@@ -77,11 +143,11 @@ public class MenusScript : MonoBehaviour
     }
     public void RenaeButton()
     {
-        Application.OpenURL("");
+        Application.OpenURL("https://sergioisntreal.itch.io/");
     }
     public void JanaButton()
     {
-        Application.OpenURL("");
+        Application.OpenURL("https://janaradulaski.itch.io/");
     }
 
     public void QuitButton()
