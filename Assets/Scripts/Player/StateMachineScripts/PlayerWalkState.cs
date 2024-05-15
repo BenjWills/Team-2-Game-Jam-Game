@@ -26,8 +26,8 @@ public class PlayerWalkState : PlayerBaseState
         {
             if(moveSoundTimer<=0)
             {
-                moveSoundTimer = 0.5f;
-                //AudioManager.Instance.PlayWalk();
+                moveSoundTimer = .75f;
+                AudioManager.Instance.PlayWalk();
             }
             else
             {
