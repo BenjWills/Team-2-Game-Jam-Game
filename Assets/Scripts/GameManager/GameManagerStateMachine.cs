@@ -15,6 +15,7 @@ public class GameManagerStateMachine : MonoBehaviour
     [Header("Global Values")]
     public MenuManager menuManager;
     public GameObject _CameraTrack;
+    PlayerStateMachine playerStateMachine;
     //public AudioManager audioManager;
     public GameObject Player;
     public bool _Paused; //checks if the game is paused
@@ -23,6 +24,10 @@ public class GameManagerStateMachine : MonoBehaviour
     public Vector3 playerPosition; //*
     public GameObject CopPrefab;
     public Transform CopSummonSpot;
+
+    public int CharactersCaught;
+
+
 
     public TMP_Text TaskText;
 
@@ -55,6 +60,7 @@ public class GameManagerStateMachine : MonoBehaviour
         _PlayingGame = true;
         _CanMove = true;
         menuManager = GameObject.FindObjectOfType<MenuManager>();
+        playerStateMachine = GameObject.FindObjectOfType<PlayerStateMachine>();
         //audioManager = GameObject.FindObjectOfType<AudioManager>();
         menuCamera = GameObject.FindGameObjectWithTag("MenuCamera").GetComponent<CinemachineVirtualCamera>();
         rubberCamera = GameObject.FindGameObjectWithTag("RubberCamera").GetComponent<CinemachineVirtualCamera>();
@@ -69,6 +75,9 @@ public class GameManagerStateMachine : MonoBehaviour
         currentState.EnterState();
         _GameplayTimer = 0;
         Treasure = GameObject.FindGameObjectWithTag("Treasure");
+        playerStateMachine.characterControllers[0].transform.position = new Vector3(0, .57f, -2);
+        playerStateMachine.characterControllers[1].transform.position = new Vector3(-2.5f, .57f, -2);
+        playerStateMachine.characterControllers[2].transform.position = new Vector3(2.5f, .57f, -2);
     }
     private void Update()
     {

@@ -15,6 +15,7 @@ public class AIScript : MonoBehaviour
 
     public NavMeshAgent agent;
     PlayerStateMachine playerStateMachine;
+    GameManagerStateMachine gameManager;
 
     GameObject collidedObject;
 
@@ -34,12 +35,17 @@ public class AIScript : MonoBehaviour
     public float finalValueDis;
     public float characterCaughtCounter;
 
+    bool finishRubber;
+    bool finishRuler;
+    bool finishPencil;
+
     public bool Unlocking;
     DoorScript doorScript;
 
     private void Awake()
     {
         playerStateMachine = FindObjectOfType<PlayerStateMachine>();
+        gameManager = FindObjectOfType<GameManagerStateMachine>();
         AIObject = gameObject;
         rubber = GameObject.FindGameObjectWithTag("Rubber");
         ruler = GameObject.FindGameObjectWithTag("Ruler");
@@ -53,7 +59,7 @@ public class AIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -101,7 +107,7 @@ public class AIScript : MonoBehaviour
 
     private void CheckForActiveDoor()
     {
-        if (doorScript!=null)
+        if (doorScript != null)
         {
             Unlocking = doorScript.Unlocking;
             if (!doorScript.Unlocking)
@@ -114,7 +120,7 @@ public class AIScript : MonoBehaviour
     private void OnTriggerEnter(Collider collision)
     {
         var mask = playerStateMachine.layerMaskInteract.value;
-        if (Vector3.Distance(transform.position,collision.gameObject.transform.position) <= 2)
+        if (Vector3.Distance(transform.position, collision.gameObject.transform.position) <= 2)
         {
             if (!Physics.Linecast(transform.position, collision.gameObject.transform.position, mask))
             {
@@ -128,14 +134,16 @@ public class AIScript : MonoBehaviour
                         AgainstDoor();
                     }
                 }
-            } 
-        } 
+            }
+        }
     }
     private void CheckForCriminals()
     {
         if (collidedObject.gameObject == rubber)
         {
             playerStateMachine._RubberArrested = true;
+            gameManager.CharactersCaught++;
+            finishRubber = true;
             if (playerStateMachine.CharacterType == 0)
             {
                 playerStateMachine.ShouldChangeCharacter = true;
@@ -144,7 +152,9 @@ public class AIScript : MonoBehaviour
         }
         if (collidedObject.gameObject == ruler)
         {
+            finishRuler = true;
             playerStateMachine._RulerArrested = true;
+            gameManager.CharactersCaught++;
             if (playerStateMachine.CharacterType == 1)
             {
                 playerStateMachine.ShouldChangeCharacter = true;
@@ -153,11 +163,25 @@ public class AIScript : MonoBehaviour
         }
         if (collidedObject.gameObject == pencil)
         {
+            finishPencil = true;
             playerStateMachine._PencilArrested = true;
+            gameManager.CharactersCaught++;
             if (playerStateMachine.CharacterType == 2)
             {
                 playerStateMachine.ShouldChangeCharacter = true;
                 playerStateMachine.ForceSwitch();
+            }
+        }
+        
+    }   
+
+    private void CheckIfArrested()
+    {
+        if (collidedObject.transform.position != new Vector3(100, 0, 100))
+        {
+            if (finishRubber && playerStateMachine.CharacterType != 0)
+            {
+                collidedObject.transform.position = new Vector3(100, 0, 100);
             }
         }
     }
