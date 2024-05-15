@@ -10,21 +10,34 @@ public class PlayerPencilState : PlayerBaseState
         IsRootState= true;
         InitializeSubState();
     }
-    public override void EnterState() { }
-    public override void UpdateState() 
+
+    public override void EnterState()
     {
-        Debug.Log("Pencil");
+    }
+    public override void UpdateState()
+    {
         CheckSwitchStates();
+        ChangeAnimation();
     }
-    public override void ExitState() { }
-    public override void CheckSwitchStates() 
+    public override void ExitState()
     {
-        InitializeCharacterState();
+        Ctx.CharacterAnimators[2].SetBool("walking", false);
     }
-    public override void InitializeSubState() 
-    { 
+    public override void CheckSwitchStates()
+    {
+
+    }
+    public override void InitializeSubState()
+    {
     }
     public override void InitializeCharacterState()
     {
+
+    }
+
+    private void ChangeAnimation()
+    {
+        Ctx.CharacterAnimators[2].SetBool("walking", Ctx._Walking);
+        Ctx.CharacterAnimators[2].SetBool("action", Ctx._Actioning);
     }
 }

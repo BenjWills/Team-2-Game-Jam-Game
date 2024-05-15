@@ -4,17 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-
+  - PencilCamera
+  - RulerCamera
+  - MenuCamera
+  - RubberCamera
+  - Interact
   - Rubber
   - Ruler
   - Pencil
-
-  - RubberCamera
-  - RulerCamera
-  - PencilCamera
-  - MenuCamera
-  - Interact
-
+  - Text
   layers:
   - Default
   - TransparentFX
@@ -22,8 +20,8 @@ TagManager:
   - Wall
   - Water
   - UI
-  - AI
-  - Character
+  - 
+  - 
   - 
   - 
   - 

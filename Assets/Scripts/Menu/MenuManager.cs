@@ -35,6 +35,8 @@ public class MenuManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         gameManager = FindObjectOfType<GameManagerStateMachine>();
     }
 

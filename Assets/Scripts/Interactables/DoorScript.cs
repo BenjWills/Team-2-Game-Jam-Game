@@ -19,6 +19,7 @@ public class DoorScript : MonoBehaviour
 
     public bool Unlocking;
     public float UnlockTimer;
+    public float RulerUnlockTimer;
 
     [SerializeField] float PencilTimer = 5f;
     [SerializeField] float RubberTimer = 10f;
@@ -101,18 +102,30 @@ public class DoorScript : MonoBehaviour
     {
         if (_RulerLocked)
         {
-            UnlockTimer += Time.deltaTime;
-            DoorScale.transform.localScale = new Vector3(1 / UnlockTimer, 1 / UnlockTimer, 1 / UnlockTimer);
-            if (UnlockTimer>=RulerTimer)
+            if (RulerUnlockTimer == 0)
             {
-                DoorScale.transform.localScale = new Vector3(1, 1, 1);
-                UnlockDoor();
-                OpenDoor();
+                DoorScale.transform.localScale = DoorScale.transform.localScale * .975f;
+                if (DoorScale.transform.localScale.x <= .05f)
+                {
+                    RulerUnlockTimer = .1f;
+                    FinishAbility();
+                }
+            }
+            else
+            {
+                RulerUnlockTimer += Time.deltaTime;
+                DoorScale.transform.localScale = new Vector3(.05f * RulerUnlockTimer, .05f * RulerUnlockTimer, .05f * RulerUnlockTimer);
+                if (RulerUnlockTimer >= RulerTimer)
+                {
+                    DoorScale.transform.localScale = new Vector3(1, 1, 1);
+                    UnlockDoor();
+                    OpenDoor();
+                }
             }
         }
         else
         {
-            UnlockTimer = 0;
+            RulerUnlockTimer = 0;
         }
     }
 
@@ -160,6 +173,8 @@ public class DoorScript : MonoBehaviour
                 _PencilLocked = true;
                 break;
         }
+        playerStateMachine._Actioning = true;
+        _Locked = true;
     }
 
     private void UnlockDoor()
@@ -173,5 +188,6 @@ public class DoorScript : MonoBehaviour
     public void FinishAbility()
     {
         gameManager._CanMove = true;
+        playerStateMachine._Actioning = false;
     }
 }

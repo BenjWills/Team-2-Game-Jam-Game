@@ -16,6 +16,7 @@ public class PlayerWalkState : PlayerBaseState
 
     public override void EnterState() 
     {
+        Ctx._Walking = true;
     }
     public override void UpdateState() 
     {
@@ -36,7 +37,10 @@ public class PlayerWalkState : PlayerBaseState
         ApplyPlayerInput();
         ApplyMovement();
     }
-    public override void ExitState() { }
+    public override void ExitState() 
+    {
+        Ctx._Walking= false;
+    }
     public override void CheckSwitchStates() 
     {
         if (Ctx.horInput==0&&Ctx.vertInput==0)

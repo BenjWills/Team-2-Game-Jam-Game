@@ -56,6 +56,7 @@ public class PlayerInteractState : PlayerBaseState
                 }
                 break;
         }
+        CheckForInteractables();
     }
 
     private void CheckForInteractables()
@@ -98,6 +99,12 @@ public class PlayerInteractState : PlayerBaseState
             case "Door":
                 InteractWithDoor();
                 break;
+            case "Vault":
+                InteractWithVault();
+                break;
+            case "Vent":
+                InteractWithVent();
+                break;
         }
     }
 
@@ -122,6 +129,17 @@ public class PlayerInteractState : PlayerBaseState
         }
     }
 
+    private void InteractWithVault()
+    {
+        var VaultScript = currentInteractable.GetComponent<VaultScript>();
+        VaultScript.SacrificeCharacter();
+    }
+
+    private void InteractWithVent()
+    {
+        var VentScript = currentInteractable.GetComponent<VentScript>();
+        VentScript.VentInteracted();
+    }
     private void AbilityOnDoor()
     {
         var DoorScript = currentInteractable.GetComponent<DoorScript>();

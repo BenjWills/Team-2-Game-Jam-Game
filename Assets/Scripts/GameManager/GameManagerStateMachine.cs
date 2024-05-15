@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameManagerStateMachine : MonoBehaviour
 {
@@ -19,6 +21,14 @@ public class GameManagerStateMachine : MonoBehaviour
     public bool _PlayingGame; //checks if the game is being played or not (will be in menu if not being played)
     public bool _CanMove;
     public Vector3 playerPosition; //*
+
+    public TMP_Text TaskText;
+
+    public float _GameplayTimer;
+    public float _MaxTimer = 150f;
+    public Image TimerImage;
+    public bool CopSummoned;
+    public bool CharacterSacrificed;
 
     [Header("Cinemachine")]
     public CinemachineVirtualCamera menuCamera;
@@ -52,6 +62,7 @@ public class GameManagerStateMachine : MonoBehaviour
         Cameras.Add(pencilCamera);
         currentState = states.Menu();
         currentState.EnterState();
+        _GameplayTimer = 0;
     }
     private void Update()
     {
@@ -61,5 +72,54 @@ public class GameManagerStateMachine : MonoBehaviour
         //    _CanMove = false;
         //}
         //if (!_CanMove ) { }
+        GameplayTimer();
+    }
+
+    private void GameplayTimer()
+    {
+        if (_GameplayTimer == 0)
+        {
+            TaskText.text = "Lock doors in the bank before the Cops arrive!";
+        }
+        CopSpawned();
+        PauseTimerForSacrifice();
+        TimerEndReached();
+        TimerImage.fillAmount = _GameplayTimer / _MaxTimer;
+    }
+
+    private void CopSpawned()
+    {
+        if (_GameplayTimer >= 30 && !CopSummoned)
+        {
+            CopSummoned = true;
+            TaskText.text = "Defend the vault from the cop!";
+            //summon cop
+        }
+    }
+    private void PauseTimerForSacrifice()
+    {
+        if (_GameplayTimer >= 120 && !CharacterSacrificed)
+        {
+            var VaultScript = FindObjectOfType<VaultScript>();
+            if (VaultScript.SacrificeCollider.enabled == false)
+            {
+                TaskText.text = "Make one character collect treasure!";
+                VaultScript.TimerReached();
+            }
+        }
+        else
+        {
+            _GameplayTimer += Time.deltaTime*10;
+        }
+    }
+    private void TimerEndReached()
+    {
+        if (_GameplayTimer >= _MaxTimer)
+        {
+            var VentScript = FindObjectOfType<VentScript>();
+            VentScript.VentActivated();
+            TaskText.text = "Get out!";
+            _GameplayTimer = _MaxTimer;
+        }
     }
 }

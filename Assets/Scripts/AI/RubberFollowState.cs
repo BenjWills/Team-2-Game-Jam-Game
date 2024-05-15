@@ -6,7 +6,6 @@ public class RubberFollowState : AIStates
 {
     public override void EnterState(AIScript ais)
     {
-        Debug.Log("Rubber");
         if (ais.character[0] == null)
         {
             ais.characterCaughtCounter += 1;
