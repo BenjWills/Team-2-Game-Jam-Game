@@ -43,18 +43,22 @@ public class PlayerStateMachine : MonoBehaviour
     public bool FinishTransform;
     public List<CharacterController> characterControllers;
     public SpriteRenderer[] characterSprites;
+    public int amountOfArrested;
 
     [Header("Rubber")]
     public CharacterController rubberController;
     public bool _RubberTaken;
+    public bool _RubberArrested;
 
     [Header("Ruler")]
     public CharacterController rulerController;
     public bool _RulerTaken;
+    public bool _RulerArrested;
 
     [Header("Pencil")]
     public CharacterController pencilController;
     public bool _PencilTaken;
+    public bool _PencilArrested;
 
 
     [Header("Input Start Up")]
@@ -146,14 +150,19 @@ public class PlayerStateMachine : MonoBehaviour
         }
         if (ShouldChangeCharacter)
         {
-            CameraFadeAnimator.SetBool("Switch", true);
-            if (FinishTransform)
-            {
-                ShouldChangeCharacter = false;
-                FinishTransform = false;
-                CameraFadeAnimator.SetBool("Switch", false);
-                ChangeCharacter();
-            }
+            ForceSwitch();
+        }
+    }
+
+    public void ForceSwitch()
+    {
+        CameraFadeAnimator.SetBool("Switch", true);
+        if (FinishTransform)
+        {
+            ShouldChangeCharacter = false;
+            FinishTransform = false;
+            CameraFadeAnimator.SetBool("Switch", false);
+            ChangeCharacter();
         }
     }
 
@@ -168,6 +177,7 @@ public class PlayerStateMachine : MonoBehaviour
             CharacterType++;
         }
         HasCharacterBeenSacrificed();
+        HasCharacterBeenArrested();
         int camIndex = -1;
         foreach(CinemachineVirtualCamera camera in gameManager.Cameras)
         {
@@ -194,6 +204,36 @@ public class PlayerStateMachine : MonoBehaviour
         if (_PencilTaken && CharacterType == 2)
         {
             CharacterType = 0;
+        }
+    }
+
+    private void HasCharacterBeenArrested()
+    {
+        if (_RubberArrested && CharacterType == 0)
+        {
+            CharacterType++;
+        }
+        if (_RulerArrested && CharacterType == 1)
+        {
+            CharacterType++;
+        }
+        if (_PencilArrested && CharacterType == 2)
+        {
+            if (_RubberArrested)
+            {
+                if (_RulerArrested)
+                {
+                    CharacterType = 0;
+                }
+                else
+                {
+                    CharacterType = 1;
+                }
+            }
+            else
+            {
+                CharacterType = 0;
+            }
         }
     }
 

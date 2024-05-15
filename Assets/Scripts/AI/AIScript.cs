@@ -12,6 +12,8 @@ public class AIScript : MonoBehaviour
     public readonly AIWinState ws = new AIWinState();
 
     public NavMeshAgent agent;
+    PlayerStateMachine playerStateMachine;
+
 
     private GameObject AIObject;
     public GameObject rubber;
@@ -27,61 +29,47 @@ public class AIScript : MonoBehaviour
     public float finalValueDis;
     public float characterCaughtCounter;
 
-    public bool cCaught;
-    public bool c1Caught;
-    public bool c2Caught;
-
-
     private void Awake()
     {
-        AIObject = agent.gameObject;
+        playerStateMachine = FindObjectOfType<PlayerStateMachine>();
+        AIObject = gameObject;
+        character.Add(rubber.transform);
+        character.Add(ruler.transform);
+        character.Add(pencil.transform);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        if (finalValueDis == AICharacterDis)
-        {
-            aiEndPoint.position = character[0].position;
-            TransitionToState(rfs);
-        }
-        else if (finalValueDis == AICharacterDis2)
-        {
-            aiEndPoint.position = character[1].position;
-            TransitionToState(rufs);
-        }
-        else if (finalValueDis == AICharacterDis3)
-        {
-            aiEndPoint.position = character[2].position;
-            TransitionToState(pfs);
-        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (cCaught == true)
+        TrackPlayer();
+        if (playerStateMachine._RubberArrested)
         {
             AICharacterDis = 1000;
-            Destroy(rubber);
+            //Destroy(rubber);
         }
         else
         {
             AICharacterDis = Vector3.Distance(character[0].position, AIObject.transform.position);
         }
-        if (c1Caught == true)
+        if (playerStateMachine._RulerArrested)
         {
             AICharacterDis2 = 1000;
-            Destroy(ruler);
+            //Destroy(ruler);
         }
         else
         {
             AICharacterDis2 = Vector3.Distance(character[1].position, AIObject.transform.position);
         }
-        if (c2Caught == true)
+        if (playerStateMachine._PencilArrested)
         {
             AICharacterDis3 = 1000;
-            Destroy(pencil);
+            //Destroy(pencil);
         }
         else
         {
@@ -100,17 +88,51 @@ public class AIScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Rubber"))
+        if (collision.gameObject == rubber)
         {
-            cCaught = true;
+            playerStateMachine._RubberArrested = true;
+            if (playerStateMachine.CharacterType==0)
+            {
+                playerStateMachine.ShouldChangeCharacter = true;
+                playerStateMachine.ForceSwitch();
+            }
         }
-        if (collision.gameObject.CompareTag("Ruler"))
+        if (collision.gameObject == ruler)
         {
-            c1Caught = true;
+            playerStateMachine._RulerArrested = true;
+            if (playerStateMachine.CharacterType == 1)
+            {
+                playerStateMachine.ShouldChangeCharacter = true;
+                playerStateMachine.ForceSwitch();
+            }
         }
-        if (collision.gameObject.CompareTag("Pencil"))
+        if (collision.gameObject == pencil)
         {
-            c2Caught = true;
+            playerStateMachine._PencilArrested = true;
+            if (playerStateMachine.CharacterType == 2)
+            {
+                playerStateMachine.ShouldChangeCharacter = true;
+                playerStateMachine.ForceSwitch();
+            }
+        }
+    }
+
+    private void TrackPlayer()
+    {
+        if (finalValueDis == AICharacterDis)
+        {
+            aiEndPoint.position = character[0].position;
+            TransitionToState(rfs);
+        }
+        else if (finalValueDis == AICharacterDis2)
+        {
+            aiEndPoint.position = character[1].position;
+            TransitionToState(rufs);
+        }
+        else if (finalValueDis == AICharacterDis3)
+        {
+            aiEndPoint.position = character[2].position;
+            TransitionToState(pfs);
         }
     }
 

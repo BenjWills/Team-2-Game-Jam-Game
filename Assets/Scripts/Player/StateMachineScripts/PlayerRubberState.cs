@@ -39,7 +39,6 @@ public class PlayerRubberState : PlayerBaseState
     {
         Ctx.CharacterAnimators[0].SetBool("walking", Ctx._Walking);
         Ctx.CharacterAnimators[0].SetBool("action", Ctx._Actioning);
-        Debug.Log("!");
     }
 
 }

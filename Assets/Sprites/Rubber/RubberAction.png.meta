@@ -114,7 +114,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -135,7 +135,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 500
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -156,7 +156,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1000
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -177,7 +177,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1500
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -198,7 +198,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2000
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -219,7 +219,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2500
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -240,7 +240,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3000
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -261,7 +261,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3500
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -282,7 +282,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4000
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -303,7 +303,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4500
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -324,7 +324,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 5000
-        y: 0
+        y: 500
         width: 500
         height: 500
       alignment: 0
@@ -344,7 +344,7 @@ TextureImporter:
       name: RubberAction_11
       rect:
         serializedVersion: 2
-        x: 5500
+        x: 0
         y: 0
         width: 500
         height: 500
@@ -365,7 +365,7 @@ TextureImporter:
       name: RubberAction_12
       rect:
         serializedVersion: 2
-        x: 6000
+        x: 500
         y: 0
         width: 500
         height: 500
@@ -386,7 +386,7 @@ TextureImporter:
       name: RubberAction_13
       rect:
         serializedVersion: 2
-        x: 6500
+        x: 1000
         y: 0
         width: 500
         height: 500
@@ -407,7 +407,7 @@ TextureImporter:
       name: RubberAction_14
       rect:
         serializedVersion: 2
-        x: 7000
+        x: 1500
         y: 0
         width: 500
         height: 500
@@ -428,7 +428,7 @@ TextureImporter:
       name: RubberAction_15
       rect:
         serializedVersion: 2
-        x: 7500
+        x: 2000
         y: 0
         width: 500
         height: 500
@@ -449,7 +449,7 @@ TextureImporter:
       name: RubberAction_16
       rect:
         serializedVersion: 2
-        x: 8000
+        x: 2500
         y: 0
         width: 500
         height: 500
@@ -470,7 +470,7 @@ TextureImporter:
       name: RubberAction_17
       rect:
         serializedVersion: 2
-        x: 8500
+        x: 3000
         y: 0
         width: 500
         height: 500
@@ -491,7 +491,7 @@ TextureImporter:
       name: RubberAction_18
       rect:
         serializedVersion: 2
-        x: 9000
+        x: 3500
         y: 0
         width: 500
         height: 500
@@ -512,7 +512,7 @@ TextureImporter:
       name: RubberAction_19
       rect:
         serializedVersion: 2
-        x: 9500
+        x: 4000
         y: 0
         width: 500
         height: 500
@@ -533,7 +533,7 @@ TextureImporter:
       name: RubberAction_20
       rect:
         serializedVersion: 2
-        x: 10000
+        x: 4500
         y: 0
         width: 500
         height: 500

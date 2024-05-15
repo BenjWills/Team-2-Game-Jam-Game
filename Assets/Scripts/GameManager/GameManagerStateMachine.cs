@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManagerStateMachine : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class GameManagerStateMachine : MonoBehaviour
     public bool _PlayingGame; //checks if the game is being played or not (will be in menu if not being played)
     public bool _CanMove;
     public Vector3 playerPosition; //*
+
+    public TMP_Text TaskText;
 
     public float _GameplayTimer;
     public float _MaxTimer = 150f;
@@ -74,6 +77,10 @@ public class GameManagerStateMachine : MonoBehaviour
 
     private void GameplayTimer()
     {
+        if (_GameplayTimer == 0)
+        {
+            TaskText.text = "Lock doors in the bank before the Cops arrive!";
+        }
         CopSpawned();
         PauseTimerForSacrifice();
         TimerEndReached();
@@ -85,6 +92,7 @@ public class GameManagerStateMachine : MonoBehaviour
         if (_GameplayTimer >= 30 && !CopSummoned)
         {
             CopSummoned = true;
+            TaskText.text = "Defend the vault from the cop!";
             //summon cop
         }
     }
@@ -92,16 +100,23 @@ public class GameManagerStateMachine : MonoBehaviour
     {
         if (_GameplayTimer >= 120 && !CharacterSacrificed)
         {
+            var VaultScript = FindObjectOfType<VaultScript>();
+            if (VaultScript.SacrificeCollider.enabled == false)
+            {
+                TaskText.text = "Make one character collect treasure!";
+                VaultScript.TimerReached();
+            }
         }
         else
         {
-            _GameplayTimer += Time.deltaTime;
+            _GameplayTimer += Time.deltaTime*10;
         }
     }
     private void TimerEndReached()
     {
         if (_GameplayTimer >= _MaxTimer)
         {
+            TaskText.text = "Get out!";
             _GameplayTimer = _MaxTimer;
         }
     }

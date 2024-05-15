@@ -99,6 +99,9 @@ public class PlayerInteractState : PlayerBaseState
             case "Door":
                 InteractWithDoor();
                 break;
+            case "Vault":
+                InteractWithVault();
+                break;
         }
     }
 
@@ -121,6 +124,12 @@ public class PlayerInteractState : PlayerBaseState
                 DoorScript.OpenDoor();
             }
         }
+    }
+
+    private void InteractWithVault()
+    {
+        var VaultScript = currentInteractable.GetComponent<VaultScript>();
+        VaultScript.SacrificeCharacter();
     }
 
     private void AbilityOnDoor()

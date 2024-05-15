@@ -6,7 +6,6 @@ public class PencilFollowState : AIStates
 {
     public override void EnterState(AIScript ais)
     {
-        Debug.Log("Pencil");
         if (ais.character[1] == null)
         {
             ais.characterCaughtCounter += 1;

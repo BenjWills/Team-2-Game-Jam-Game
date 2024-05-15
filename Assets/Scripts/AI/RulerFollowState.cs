@@ -6,7 +6,6 @@ public class RulerFollowState : AIStates
 {
     public override void EnterState(AIScript ais)
     {
-        Debug.Log("Ruler");
         if (ais.character[2] == null)
         {
             ais.characterCaughtCounter += 1;
