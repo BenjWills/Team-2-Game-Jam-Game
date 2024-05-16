@@ -173,6 +173,11 @@ public class AIScript : MonoBehaviour
                 playerStateMachine.ForceSwitch();
             }
         }
+        if (gameManager.CharactersCaught == 3)
+        {
+            playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
+            playerStateMachine.CameraFadeAnimator.SetTrigger("Caught");
+        }
     }   
 
     private void CheckIfArrested()

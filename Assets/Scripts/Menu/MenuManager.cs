@@ -17,16 +17,19 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject MainMenuCanvas;
     [SerializeField] private GameObject SettingsCanvas;
     [SerializeField] private GameObject PauseCanvas;
-    [SerializeField] private GameObject KeyboardCanvas;
-    [SerializeField] private GameObject GamepadCanvas;
+    //[SerializeField] private GameObject KeyboardCanvas;
+    //[SerializeField] private GameObject GamepadCanvas;
     [SerializeField] private GameObject CreditsCanvas;
-    [SerializeField] private GameObject EndCanvas;
+    [SerializeField] private GameObject FinishCanvas;
+    [SerializeField] private GameObject CaughtCanvas;
     [Header("First Selected Menu Objects")]
     [SerializeField] private GameObject FS_Menu;
     [SerializeField] private GameObject FS_Settings;
     [SerializeField] private GameObject FS_Pause;
-    [SerializeField] private GameObject FS_Keyboard;
-    [SerializeField] private GameObject FS_Gamepad;
+    //[SerializeField] private GameObject FS_Keyboard;
+    //[SerializeField] private GameObject FS_Gamepad;
+    [SerializeField] private GameObject FS_Finish;
+    [SerializeField] private GameObject FS_Caught;
 
     private PlayerStateMachine playerStateMachine;
 
@@ -69,19 +72,19 @@ public class MenuManager : MonoBehaviour
 
     private void DefaultCheckers()
     {
-        if (GamepadCanvas.activeSelf) //if the player is in the gamepad rebinding canvas, go to the settings canvas
-        {
-            GamepadCanvas.SetActive(false);
-            SettingsCanvas.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(FS_Settings);
-        }
-        else if (KeyboardCanvas.activeSelf) //if the player is in the keyboard rebinding canvas, go to the settings canvas
-        {
-            KeyboardCanvas.SetActive(false);
-            SettingsCanvas.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(FS_Settings);
-        }
-        else if (CreditsCanvas.activeSelf) //if credits canvas is active, go to main menu
+        //if (GamepadCanvas.activeSelf) //if the player is in the gamepad rebinding canvas, go to the settings canvas
+        //{
+        //    GamepadCanvas.SetActive(false);
+        //    SettingsCanvas.SetActive(true);
+        //    EventSystem.current.SetSelectedGameObject(FS_Settings);
+        //}
+        //else if (KeyboardCanvas.activeSelf) //if the player is in the keyboard rebinding canvas, go to the settings canvas
+        //{
+        //    KeyboardCanvas.SetActive(false);
+        //    SettingsCanvas.SetActive(true);
+        //    EventSystem.current.SetSelectedGameObject(FS_Settings);
+        //}
+        if (CreditsCanvas.activeSelf) //if credits canvas is active, go to main menu
         {
             CreditsCanvas.SetActive(false);
             MainMenuCanvas.SetActive(true);
@@ -132,6 +135,7 @@ public class MenuManager : MonoBehaviour
     public void GoToMenu()
     {
         PlayerUI.SetActive(false);
+        SceneManager.LoadScene(0);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         Time.timeScale = 0f;
@@ -168,24 +172,19 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void M_Credits()
-    {
-        Application.OpenURL("https://connroo.itch.io/");
-    }
+    //public void S_Keyboard()
+    //{
+    //    SettingsCanvas.SetActive(false);
+    //    KeyboardCanvas.SetActive(true);
+    //    EventSystem.current.SetSelectedGameObject(FS_Keyboard);
+    //}
 
-    public void S_Keyboard()
-    {
-        SettingsCanvas.SetActive(false);
-        KeyboardCanvas.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(FS_Keyboard);
-    }
-
-    public void S_Gamepad() 
-    {
-        SettingsCanvas.SetActive(false);
-        GamepadCanvas.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(FS_Gamepad);
-    }
+    //public void S_Gamepad() 
+    //{
+    //    SettingsCanvas.SetActive(false);
+    //    GamepadCanvas.SetActive(true);
+    //    EventSystem.current.SetSelectedGameObject(FS_Gamepad);
+    //}
 
     public void P_PauseGame()
     {
@@ -208,4 +207,24 @@ public class MenuManager : MonoBehaviour
         Cursor.visible = false;
         Time.timeScale = 1f;
     }
+
+    public void P_Finish(bool escaped)
+    {
+        gameManager._Paused = true;
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        PlayerUI.SetActive(false);
+        if (escaped)
+        {
+            FinishCanvas.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(FS_Finish);
+        }
+        else
+        {
+            CaughtCanvas.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(FS_Caught);
+        }
+        Time.timeScale = 0f;
+    }
+
 }

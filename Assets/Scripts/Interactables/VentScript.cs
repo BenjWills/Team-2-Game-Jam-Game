@@ -71,6 +71,7 @@ public class VentScript : MonoBehaviour
         else
         {
             playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
+            playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
         }
     }
 }
