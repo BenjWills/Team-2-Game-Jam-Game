@@ -65,6 +65,7 @@ public class AIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(gameManager.CharactersCaught);
         TrackPlayer();
         CheckForActiveDoor();
         CheckIfArrested();
@@ -173,7 +174,7 @@ public class AIScript : MonoBehaviour
                 playerStateMachine.ForceSwitch();
             }
         }
-        if (gameManager.CharactersCaught == 3)
+        if (playerStateMachine._RubberArrested && playerStateMachine._RulerArrested&& playerStateMachine._PencilArrested)
         {
             playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
             playerStateMachine.CameraFadeAnimator.SetTrigger("Caught");

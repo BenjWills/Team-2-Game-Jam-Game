@@ -116,7 +116,6 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(CharacterType);
         currentState.UpdateStates();
         CheckCurrentCharacter();
         IsInteractPressed = false;
