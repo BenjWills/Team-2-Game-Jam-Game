@@ -17,12 +17,12 @@ public class MenusScript : MonoBehaviour
     public AudioMixer mainMixer;
     public Slider volumeSlider;
 
-    private bool isFullscreenPP;
     public Toggle fullscreenToggle;
 
     private Resolution[] screenRes;
     private Resolution currentRes;
     public Dropdown resDropdown;
+    private float resIndexDebug;
 
     public float sensitivity;
     public Slider sensitivitySlider;
@@ -49,13 +49,19 @@ public class MenusScript : MonoBehaviour
         }
 
         resDropdown.AddOptions(options);
-        resDropdown.value = currentResIndex;
+        if (PlayerPrefs.HasKey("Resolution"))
+        {
+            resDropdown.value = PlayerPrefs.GetInt("Resolution");
+        }
+        else
+        {
+            resDropdown.value = currentResIndex;
+        }
         resDropdown.RefreshShownValue();
 
         volumeSlider.value = PlayerPrefs.GetFloat("Volume");
         sensitivitySlider.value = PlayerPrefs.GetFloat("Sensitivity");
         fullscreenToggle.isOn = (PlayerPrefs.GetInt("Fullscreen")!= 0);
-        resDropdown.value = PlayerPrefs.GetInt("Resolution");
     }
 
     // Update is called once per frame
@@ -81,6 +87,7 @@ public class MenusScript : MonoBehaviour
         currentRes = screenRes[resIndex];
         Screen.SetResolution(currentRes.width, currentRes.height, Screen.fullScreen);
         PlayerPrefs.SetInt("Resolution", resIndex);
+        Debug.Log(PlayerPrefs.GetInt("Resolution"));
     }
 
     public void SetSensitivity(float tempSensitivity)
