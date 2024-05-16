@@ -51,6 +51,7 @@ public class VentScript : MonoBehaviour
     public void VentInteracted()
     {
         gameManager.CharactersEscaped++;
+        gameManager.CharactersRemaining++;
         if (gameManager.CharactersEscaped+gameManager.CharactersCaught != 3)
         {
             switch (playerStateMachine.CharacterType)
@@ -66,6 +67,7 @@ public class VentScript : MonoBehaviour
                     break;
             }
             playerStateMachine.ShouldChangeCharacter = true;
+            playerStateMachine.characterControllers[playerStateMachine.CharacterType].transform.position = new Vector3(100, 0, 100);
             playerStateMachine.ForceSwitch();
         }
         else

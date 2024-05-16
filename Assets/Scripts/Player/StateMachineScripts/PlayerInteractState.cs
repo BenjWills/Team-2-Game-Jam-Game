@@ -20,6 +20,9 @@ public class PlayerInteractState : PlayerBaseState
         {
             InteractRaycast();
         }
+        //Debug.Log(Ctx._RubberTaken);
+        //Debug.Log(Ctx._RulerTaken);
+        //Debug.Log(Ctx._PencilTaken);
     }
     public override void ExitState() 
     {
@@ -62,12 +65,14 @@ public class PlayerInteractState : PlayerBaseState
     private void CheckForInteractables()
     {
         int index = 0;
+        Debug.Log(InteractablesInArea);
         foreach (GameObject interactable in InteractablesInArea)
         {
             currentInteractable = interactable;
             var mask = Ctx.layerMaskInteract.value;
             if (!Physics.Linecast(Ctx._PlayerTrack[Ctx.CharacterType].position, interactable.transform.position, mask) && index == 0)
             {
+                Debug.Log("Line casts");
                 if (Ctx.IsInteractPressed)
                 {
                     InteractOnObject();
@@ -76,6 +81,10 @@ public class PlayerInteractState : PlayerBaseState
                 {
                     AbilityOnObject();
                 }
+            }
+            else
+            {
+                Debug.Log("WALL");
             }
         }
     }
@@ -138,6 +147,7 @@ public class PlayerInteractState : PlayerBaseState
     {
         var VentScript = currentInteractable.GetComponent<VentScript>();
         VentScript.VentInteracted();
+        Debug.Log("!");
     }
     private void AbilityOnDoor()
     {
