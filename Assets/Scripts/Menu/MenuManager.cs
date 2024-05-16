@@ -33,6 +33,10 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject FS_Finish;
     [SerializeField] private GameObject FS_Caught;
 
+
+    [SerializeField] private GameObject[] Stars;
+    [SerializeField] private GameObject[] Scribbles;
+
     private PlayerStateMachine playerStateMachine;
 
     // Start is called before the first frame update
