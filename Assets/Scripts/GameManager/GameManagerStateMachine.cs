@@ -27,6 +27,7 @@ public class GameManagerStateMachine : MonoBehaviour
 
     public int CharactersEscaped;
     public int CharactersCaught;
+    public int CharactersRemaining;
 
 
 
@@ -92,7 +93,7 @@ public class GameManagerStateMachine : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(_PlayingGame);
+        
         currentState.UpdateStates();
         //if (_Paused || !_PlayingGame)
         //{
@@ -110,7 +111,6 @@ public class GameManagerStateMachine : MonoBehaviour
         CopSpawned();
         PauseTimerForSacrifice();
         TimerEndReached();
-        Debug.Log("AHHHHHH");
         TimerImage.fillAmount = _GameplayTimer / _MaxTimer;
     }
 
@@ -141,7 +141,7 @@ public class GameManagerStateMachine : MonoBehaviour
         }
         else
         {
-            _GameplayTimer += Time.deltaTime*5;
+            _GameplayTimer += Time.deltaTime*50;
         }
     }
     private void TimerEndReached()

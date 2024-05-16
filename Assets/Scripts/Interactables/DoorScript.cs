@@ -173,12 +173,15 @@ public class DoorScript : MonoBehaviour
         switch(playerStateMachine.ReturnCharacterName())
         {
             case "rubber":
+                AudioManager.Instance.Play("Rubber Ab");
                 _RubberLocked = true;
                 break;
             case "ruler":
+                AudioManager.Instance.Play("Ruler Ab");
                 _RulerLocked = true;
                 break;
             case "pencil":
+                AudioManager.Instance.Play("Pencil Ab");
                 _PencilLocked = true;
                 break;
         }

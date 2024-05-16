@@ -65,7 +65,6 @@ public class AIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(gameManager.CharactersCaught);
         TrackPlayer();
         CheckForActiveDoor();
         CheckIfArrested();
@@ -143,35 +142,63 @@ public class AIScript : MonoBehaviour
     {
         if (collidedObject.gameObject == rubber)
         {
+            gameManager.CharactersRemaining++;
             playerStateMachine._RubberArrested = true;
             finishRubber = true;
             gameManager.CharactersCaught++;
-            if (playerStateMachine.CharacterType == 0)
+            if (gameManager.CharactersRemaining>=3)
             {
-                playerStateMachine.ShouldChangeCharacter = true;
-                playerStateMachine.ForceSwitch();
+                playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
+                playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
             }
+            else
+            {
+                if (playerStateMachine.CharacterType == 0)
+                {
+                    playerStateMachine.ShouldChangeCharacter = true;
+                    playerStateMachine.ForceSwitch();
+                }
+            }
+            
         }
         if (collidedObject.gameObject == ruler)
         {
+            gameManager.CharactersRemaining++;
             playerStateMachine._RulerArrested = true;
             finishRuler = true;
             gameManager.CharactersCaught++;
-            if (playerStateMachine.CharacterType == 1)
+            if (gameManager.CharactersRemaining >= 3)
             {
-                playerStateMachine.ShouldChangeCharacter = true;
-                playerStateMachine.ForceSwitch();
+                playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
+                playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
+            }
+            else
+            {
+                if (playerStateMachine.CharacterType == 1)
+                {
+                    playerStateMachine.ShouldChangeCharacter = true;
+                    playerStateMachine.ForceSwitch();
+                }
             }
         }
         if (collidedObject.gameObject == pencil)
         {
+            gameManager.CharactersRemaining++;
             playerStateMachine._PencilArrested = true;
             finishPencil = true;
             gameManager.CharactersCaught++;
-            if (playerStateMachine.CharacterType == 2)
+            if (gameManager.CharactersRemaining >= 3)
             {
-                playerStateMachine.ShouldChangeCharacter = true;
-                playerStateMachine.ForceSwitch();
+                playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
+                playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
+            }
+            else
+            {
+                if (playerStateMachine.CharacterType == 2)
+                {
+                    playerStateMachine.ShouldChangeCharacter = true;
+                    playerStateMachine.ForceSwitch();
+                }
             }
         }
         if (playerStateMachine._RubberArrested && playerStateMachine._RulerArrested&& playerStateMachine._PencilArrested)

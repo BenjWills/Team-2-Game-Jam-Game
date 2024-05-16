@@ -244,7 +244,7 @@ public class MenuManager : MonoBehaviour
             foreach(GameObject star in Stars)
             {
                 index++;
-                if (index<gameManager.CharactersEscaped)
+                if (index<=gameManager.CharactersEscaped)
                 {
                     star.SetActive(true);
                 }
@@ -253,24 +253,9 @@ public class MenuManager : MonoBehaviour
                     star.SetActive(false);
                 }
             }
-            int scribindex = 0;
-            foreach(GameObject scribble in Scribbles)
-            {
-                scribindex++;
-                if (scribindex == 1)
-                {
-                    scribble.SetActive(playerStateMachine._RubberArrested);
-                }
-                else if (scribindex == 2)
-                {
-                    scribble.SetActive(playerStateMachine._RulerArrested);
-                }
-                else if (scribindex == 3)
-                {
-                    scribble.SetActive(playerStateMachine._PencilArrested);
-                }
-
-            }
+            Scribbles[0].SetActive(playerStateMachine._RubberArrested);
+            Scribbles[1].SetActive(playerStateMachine._RulerArrested);
+            Scribbles[2].SetActive(playerStateMachine._PencilArrested);
         }
         else
         {
