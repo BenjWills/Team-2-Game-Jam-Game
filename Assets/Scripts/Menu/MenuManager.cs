@@ -153,7 +153,7 @@ public class MenuManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         Time.timeScale = 0f;
-        //gameManager._PlayingGame = false;
+        gameManager._PlayingGame = false;
         gameManager._Paused = true;
         PauseCanvas.SetActive(false);
         MainMenuCanvas.SetActive(true);

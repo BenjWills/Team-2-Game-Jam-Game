@@ -110,6 +110,7 @@ public class GameManagerStateMachine : MonoBehaviour
         CopSpawned();
         PauseTimerForSacrifice();
         TimerEndReached();
+        Debug.Log("AHHHHHH");
         TimerImage.fillAmount = _GameplayTimer / _MaxTimer;
     }
 

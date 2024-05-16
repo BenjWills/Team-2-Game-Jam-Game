@@ -17,12 +17,13 @@ public class GameManagerGameState : GameManagerBaseState
     }
     public override void UpdateState()
     {
-        if (Ctx.rubberCamera==null)
+        CheckSwitchStates();
+        if (Ctx._PlayingGame&&Ctx.rubberCamera==null)
         {
             Ctx.LoadIntoGame();
         }
-        CheckSwitchStates();
         Ctx.GameplayTimer();
+
     }
     public override void ExitState() 
     {
