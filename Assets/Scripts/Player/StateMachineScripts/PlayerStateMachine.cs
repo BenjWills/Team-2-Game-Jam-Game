@@ -116,6 +116,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(CharacterType);
         currentState.UpdateStates();
         CheckCurrentCharacter();
         IsInteractPressed = false;
@@ -193,6 +194,7 @@ public class PlayerStateMachine : MonoBehaviour
             }
             camIndex++;
         }
+        camIndex = -1;
         AdjustValues();
     }
 

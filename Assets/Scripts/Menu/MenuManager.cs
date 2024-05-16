@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using static UnityEngine.InputSystem.OnScreen.OnScreenStick;
 
 public class MenuManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject SettingsManager;
     [SerializeField] private GameObject InputManager;
     [SerializeField] private GameObject AudioManager;
+    [SerializeField] private GameObject CameraMain;
     [Header("UI Canvases")]
     public GameObject PlayerUI;
     [SerializeField] private GameObject MainMenuCanvas;
@@ -36,6 +38,9 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        DontDestroyOnLoad(this);
+        if (CameraMain)
+        DontDestroyOnLoad(CameraMain);
         Cursor.lockState = CursorLockMode.Confined;
         //Cursor.visible = true;
         gameManager = FindObjectOfType<GameManagerStateMachine>();

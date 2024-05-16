@@ -51,7 +51,6 @@ public class GameManagerStateMachine : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        DontDestroyOnLoad(Camera.main);
         //SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         states = new GameManagerStateFactory(this);
         //_Paused = true;
@@ -76,7 +75,7 @@ public class GameManagerStateMachine : MonoBehaviour
         rubberCamera = GameObject.FindGameObjectWithTag("RubberCamera").GetComponent<CinemachineVirtualCamera>();
         rulerCamera = GameObject.FindGameObjectWithTag("RulerCamera").GetComponent<CinemachineVirtualCamera>();
         pencilCamera = GameObject.FindGameObjectWithTag("PencilCamera").GetComponent<CinemachineVirtualCamera>();
-        //Cameras.Add(menuCamera);
+        Cameras.Add(menuCamera);
         Cameras.Add(rubberCamera);
         Cameras.Add(rulerCamera);
         Cameras.Add(pencilCamera);

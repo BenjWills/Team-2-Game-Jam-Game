@@ -8997,6 +8997,7 @@ MonoBehaviour:
   SettingsManager: {fileID: 0}
   InputManager: {fileID: 0}
   AudioManager: {fileID: 0}
+  CameraMain: {fileID: 70976925}
   PlayerUI: {fileID: 1416690924}
   MainMenuCanvas: {fileID: 289535306}
   SettingsCanvas: {fileID: 172754030}
