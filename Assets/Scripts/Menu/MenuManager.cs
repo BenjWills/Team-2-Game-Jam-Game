@@ -240,6 +240,37 @@ public class MenuManager : MonoBehaviour
         {
             FinishCanvas.SetActive(true);
             EventSystem.current.SetSelectedGameObject(FS_Finish);
+            int index = 0;
+            foreach(GameObject star in Stars)
+            {
+                index++;
+                if (index<gameManager.CharactersEscaped)
+                {
+                    star.SetActive(true);
+                }
+                else
+                {
+                    star.SetActive(false);
+                }
+            }
+            int scribindex = 0;
+            foreach(GameObject scribble in Scribbles)
+            {
+                scribindex++;
+                if (scribindex == 1)
+                {
+                    scribble.SetActive(playerStateMachine._RubberArrested);
+                }
+                else if (scribindex == 2)
+                {
+                    scribble.SetActive(playerStateMachine._RulerArrested);
+                }
+                else if (scribindex == 3)
+                {
+                    scribble.SetActive(playerStateMachine._PencilArrested);
+                }
+
+            }
         }
         else
         {
