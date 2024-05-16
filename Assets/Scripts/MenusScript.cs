@@ -30,6 +30,7 @@ public class MenusScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         screenRes = Screen.resolutions;
 
         resDropdown.ClearOptions();
@@ -95,26 +96,6 @@ public class MenusScript : MonoBehaviour
         sensitivity = tempSensitivity;
         Debug.Log(tempSensitivity);
         PlayerPrefs.SetFloat("Sensitivity", tempSensitivity);
-    }
-
-    public void StartButton()
-    {
-        SceneManager.LoadScene(gameScene);
-    }
-
-    public void SettingsAndBackButton()
-    {
-        settingsActive = !settingsActive;
-        if (settingsActive == true)
-        {
-            mainMenu.SetActive(false);
-            settingsMenu.SetActive(true);
-        }
-        if (settingsActive == false)
-        {
-            mainMenu.SetActive(true);
-            settingsMenu.SetActive(false);
-        }
     }
 
     public void CreditsAndBackButton()

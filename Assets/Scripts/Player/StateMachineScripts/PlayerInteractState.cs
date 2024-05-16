@@ -114,7 +114,6 @@ public class PlayerInteractState : PlayerBaseState
         if (DoorScript._Locked)
         {
             //trigger locked animation
-            Debug.Log("Locked");
         }
         else
         {
@@ -146,7 +145,6 @@ public class PlayerInteractState : PlayerBaseState
         if (DoorScript._Locked)
         {
             //trigger locked animation
-            Debug.Log("Locked");
         }
         else
         {

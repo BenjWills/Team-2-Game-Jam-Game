@@ -17,16 +17,19 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject MainMenuCanvas;
     [SerializeField] private GameObject SettingsCanvas;
     [SerializeField] private GameObject PauseCanvas;
-    [SerializeField] private GameObject KeyboardCanvas;
-    [SerializeField] private GameObject GamepadCanvas;
+    //[SerializeField] private GameObject KeyboardCanvas;
+    //[SerializeField] private GameObject GamepadCanvas;
     [SerializeField] private GameObject CreditsCanvas;
-    [SerializeField] private GameObject EndCanvas;
+    [SerializeField] private GameObject FinishCanvas;
+    [SerializeField] private GameObject CaughtCanvas;
     [Header("First Selected Menu Objects")]
     [SerializeField] private GameObject FS_Menu;
     [SerializeField] private GameObject FS_Settings;
     [SerializeField] private GameObject FS_Pause;
-    [SerializeField] private GameObject FS_Keyboard;
-    [SerializeField] private GameObject FS_Gamepad;
+    //[SerializeField] private GameObject FS_Keyboard;
+    //[SerializeField] private GameObject FS_Gamepad;
+    [SerializeField] private GameObject FS_Finish;
+    [SerializeField] private GameObject FS_Caught;
 
     private PlayerStateMachine playerStateMachine;
 
@@ -34,15 +37,12 @@ public class MenuManager : MonoBehaviour
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = true;
         gameManager = FindObjectOfType<GameManagerStateMachine>();
     }
 
     private void Start()
     {
-        playerStateMachine = FindObjectOfType<PlayerStateMachine>();
         //Time.timeScale = 0f;
         EventSystem.current.SetSelectedGameObject(FS_Menu);
     }
@@ -51,37 +51,48 @@ public class MenuManager : MonoBehaviour
     private void Update()
     {
         //Debug.Log(gameManager.playingGame);
-        if (playerStateMachine.IsMenuOpenClosePressed)//pause button is pressed
+        if (gameManager._PlayingGame)
         {
-            if (PauseCanvas.activeSelf)//if in pause menu, resume game
+            if (playerStateMachine != null)
             {
-                P_Resume();
+                if (playerStateMachine.IsMenuOpenClosePressed)//pause button is pressed
+                {
+                    if (PauseCanvas.activeSelf)//if in pause menu, resume game
+                    {
+                        P_Resume();
+                    }
+                    else if (gameManager._PlayingGame && !PauseCanvas.activeSelf && !gameManager._Paused)//if in game, and pause menu isnt active, pause game
+                    {
+                        P_PauseGame();
+                    }
+                    PlayingGame();
+                    DefaultCheckers();
+                    playerStateMachine.IsMenuOpenClosePressed = false;
+                }
             }
-            else if (gameManager._PlayingGame && !PauseCanvas.activeSelf && !gameManager._Paused)//if in game, and pause menu isnt active, pause game
+            else
             {
-                P_PauseGame();
+                playerStateMachine = FindObjectOfType<PlayerStateMachine>();
             }
-            PlayingGame();
-            DefaultCheckers();
-            playerStateMachine.IsMenuOpenClosePressed = false;
         }
+        
     }
 
     private void DefaultCheckers()
     {
-        if (GamepadCanvas.activeSelf) //if the player is in the gamepad rebinding canvas, go to the settings canvas
-        {
-            GamepadCanvas.SetActive(false);
-            SettingsCanvas.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(FS_Settings);
-        }
-        else if (KeyboardCanvas.activeSelf) //if the player is in the keyboard rebinding canvas, go to the settings canvas
-        {
-            KeyboardCanvas.SetActive(false);
-            SettingsCanvas.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(FS_Settings);
-        }
-        else if (CreditsCanvas.activeSelf) //if credits canvas is active, go to main menu
+        //if (GamepadCanvas.activeSelf) //if the player is in the gamepad rebinding canvas, go to the settings canvas
+        //{
+        //    GamepadCanvas.SetActive(false);
+        //    SettingsCanvas.SetActive(true);
+        //    EventSystem.current.SetSelectedGameObject(FS_Settings);
+        //}
+        //else if (KeyboardCanvas.activeSelf) //if the player is in the keyboard rebinding canvas, go to the settings canvas
+        //{
+        //    KeyboardCanvas.SetActive(false);
+        //    SettingsCanvas.SetActive(true);
+        //    EventSystem.current.SetSelectedGameObject(FS_Settings);
+        //}
+        if (CreditsCanvas.activeSelf) //if credits canvas is active, go to main menu
         {
             CreditsCanvas.SetActive(false);
             MainMenuCanvas.SetActive(true);
@@ -132,10 +143,12 @@ public class MenuManager : MonoBehaviour
     public void GoToMenu()
     {
         PlayerUI.SetActive(false);
+        playerStateMachine = null;
+        SceneManager.LoadScene(0);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
         Time.timeScale = 0f;
-        gameManager._PlayingGame = false;
+        //gameManager._PlayingGame = false;
         gameManager._Paused = true;
         PauseCanvas.SetActive(false);
         MainMenuCanvas.SetActive(true);
@@ -146,7 +159,7 @@ public class MenuManager : MonoBehaviour
     {
         if (PauseCanvas.activeSelf) //if in game and in pause menu, go to main menu
         {
-            gameManager._PlayingGame = false;
+            //gameManager._PlayingGame = false;
         }
         PlayingGame();
         DefaultCheckers();
@@ -154,12 +167,16 @@ public class MenuManager : MonoBehaviour
 
     public void StartGame()
     {
+        SceneManager.LoadScene(1);
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         gameManager._PlayingGame = true;
         gameManager._Paused = false;
+        gameManager._CanMove = true;
+        PlayerUI.SetActive(true);
         //PlayerUI.SetActive(true);
+        playerStateMachine = FindObjectOfType<PlayerStateMachine>();
         MainMenuCanvas.SetActive(false);
     }
 
@@ -168,24 +185,19 @@ public class MenuManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void M_Credits()
-    {
-        Application.OpenURL("https://connroo.itch.io/");
-    }
+    //public void S_Keyboard()
+    //{
+    //    SettingsCanvas.SetActive(false);
+    //    KeyboardCanvas.SetActive(true);
+    //    EventSystem.current.SetSelectedGameObject(FS_Keyboard);
+    //}
 
-    public void S_Keyboard()
-    {
-        SettingsCanvas.SetActive(false);
-        KeyboardCanvas.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(FS_Keyboard);
-    }
-
-    public void S_Gamepad() 
-    {
-        SettingsCanvas.SetActive(false);
-        GamepadCanvas.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(FS_Gamepad);
-    }
+    //public void S_Gamepad() 
+    //{
+    //    SettingsCanvas.SetActive(false);
+    //    GamepadCanvas.SetActive(true);
+    //    EventSystem.current.SetSelectedGameObject(FS_Gamepad);
+    //}
 
     public void P_PauseGame()
     {
@@ -208,4 +220,24 @@ public class MenuManager : MonoBehaviour
         Cursor.visible = false;
         Time.timeScale = 1f;
     }
+
+    public void P_Finish(bool escaped)
+    {
+        gameManager._Paused = true;
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        PlayerUI.SetActive(false);
+        if (escaped)
+        {
+            FinishCanvas.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(FS_Finish);
+        }
+        else
+        {
+            CaughtCanvas.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(FS_Caught);
+        }
+        Time.timeScale = 0f;
+    }
+
 }

@@ -20,14 +20,13 @@ public class PlayerWalkState : PlayerBaseState
     }
     public override void UpdateState() 
     {
-
         CheckSwitchStates();
         if (Ctx.moveDirection.x * Ctx.movementSpeed * Time.deltaTime != 0||Ctx.moveDirection.z * Ctx.movementSpeed * Time.deltaTime != 0)
         {
             if(moveSoundTimer<=0)
             {
-                moveSoundTimer = 0.5f;
-                //AudioManager.Instance.PlayWalk();
+                moveSoundTimer = .75f;
+                AudioManager.Instance.PlayWalk();
             }
             else
             {
