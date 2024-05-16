@@ -92,6 +92,7 @@ public class DoorScript : MonoBehaviour
             }
             if (UnlockTimer>=MaxTime)
             {
+                AudioManager.Instance.Play("Police Door");
                 UnlockDoor();
                 OpenDoor();
                 Unlocking = false;

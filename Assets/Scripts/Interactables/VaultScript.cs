@@ -29,6 +29,7 @@ public class VaultScript : MonoBehaviour
     public void TimerReached()
     {
         VaultCollider.enabled = false;
+        AudioManager.Instance.Play("Vault Open");
         //make vault door go bye bye
         SacrificeCollider.enabled = true;
     }

@@ -8,6 +8,10 @@ using static UnityEngine.InputSystem.OnScreen.OnScreenStick;
 
 public class MenuManager : MonoBehaviour
 {
+    private static MenuManager _instance;
+    public static MenuManager Instance { get { return _instance; } }
+
+
     GameManagerStateMachine gameManager;
     [Header("Don't Destroy On Loads")]
     [SerializeField] private GameObject SettingsManager;
@@ -43,6 +47,14 @@ public class MenuManager : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this);
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
         if (CameraMain)
         DontDestroyOnLoad(CameraMain);
         Cursor.lockState = CursorLockMode.Confined;

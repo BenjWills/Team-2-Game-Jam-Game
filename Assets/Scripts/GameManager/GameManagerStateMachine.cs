@@ -141,7 +141,7 @@ public class GameManagerStateMachine : MonoBehaviour
         }
         else
         {
-            _GameplayTimer += Time.deltaTime*50;
+            _GameplayTimer += Time.deltaTime;
         }
     }
     private void TimerEndReached()

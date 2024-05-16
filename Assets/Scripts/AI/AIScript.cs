@@ -245,6 +245,7 @@ public class AIScript : MonoBehaviour
         }
         if (!doorScript.open&&!doorScript._Locked)
         {
+            AudioManager.Instance.Play("Police Door");
             doorScript.open= true;
         }
     }

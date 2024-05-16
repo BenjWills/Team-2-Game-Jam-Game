@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
     public AudioMixer audioMixer;
     public Sound[] sounds;
     public Sound[] walkSounds;
+    public Sound[] pWalkSounds;
     //public Sound[] music;
     public static AudioManager Instance { get; private set; }
     //public AudioSource MusicSource;
@@ -41,6 +42,17 @@ public class AudioManager : MonoBehaviour
             
         }
         foreach (Sound s in walkSounds)
+        {
+            s.audioSource = gameObject.AddComponent<AudioSource>();
+            s.audioSource.clip = s.clip;
+            s.audioSource.volume = s.volume;
+            s.audioSource.pitch = s.pitch;
+            s.audioSource.loop = s.loop;
+            s.audioSource.playOnAwake = s.playOnAwake;
+            s.audioSource.panStereo = s.direction;
+            s.audioSource.outputAudioMixerGroup = s.mixerGroup;
+        }
+        foreach (Sound s in pWalkSounds)
         {
             s.audioSource = gameObject.AddComponent<AudioSource>();
             s.audioSource.clip = s.clip;
@@ -88,6 +100,20 @@ public class AudioManager : MonoBehaviour
         try
         {
             Sound s = walkSounds[UnityEngine.Random.Range(0, walkSounds.Length)];
+            s.audioSource.Play();
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"{e.Message}");
+            throw;
+        }
+    }
+
+    public void PlayPWalk()
+    {
+        try
+        {
+            Sound s = pWalkSounds[UnityEngine.Random.Range(0, pWalkSounds.Length)];
             s.audioSource.Play();
         }
         catch (Exception e)

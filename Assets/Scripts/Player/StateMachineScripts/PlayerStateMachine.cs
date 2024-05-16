@@ -334,9 +334,9 @@ public class PlayerStateMachine : MonoBehaviour
         vertInput = movementInput.y;
         horInput = movementInput.x;
 
-        cameraInputY = cameraInput.y;
-        cameraInputX = cameraInput.x;
-        //cameraInputY = cameraInput.y * settingsMenu.sensitivity;
-        //cameraInputX = cameraInput.x * settingsMenu.sensitivity;
+        //cameraInputY = cameraInput.y;
+        //cameraInputX = cameraInput.x;
+        cameraInputY = cameraInput.y * settingsMenu.sensitivity;
+        cameraInputX = cameraInput.x * settingsMenu.sensitivity;
     }
 }

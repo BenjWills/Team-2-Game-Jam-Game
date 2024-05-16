@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class MenusScript : MonoBehaviour
 {
+    private static MenusScript _instance;
+    public static MenusScript Instance { get { return _instance; } }
+
     public string gameScene;
     public GameObject mainMenu;
     public GameObject settingsMenu;
@@ -26,6 +29,19 @@ public class MenusScript : MonoBehaviour
 
     public float sensitivity;
     public Slider sensitivitySlider;
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
