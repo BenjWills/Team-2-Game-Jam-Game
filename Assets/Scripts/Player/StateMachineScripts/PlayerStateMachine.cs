@@ -16,7 +16,7 @@ public class PlayerStateMachine : MonoBehaviour
     public GameManagerStateMachine gameManager;
     public AIScript aIScript;
     public MenuManager menuManager;
-    public SettingsMenu settingsMenu;
+    public MenusScript settingsMenu;
     public RebindUI rebindUI;
     public Animator[] CharacterAnimators;
     [Header("Player Walk Variables")]
@@ -97,7 +97,7 @@ public class PlayerStateMachine : MonoBehaviour
     private void Awake()
     {
         menuManager = FindObjectOfType<MenuManager>();
-        settingsMenu = FindObjectOfType<SettingsMenu>();
+        settingsMenu = FindObjectOfType<MenusScript>();
         gameManager = FindObjectOfType<GameManagerStateMachine>();
         cameraObject = Camera.main.transform;
         states = new PlayerStateFactory(this);
@@ -106,6 +106,7 @@ public class PlayerStateMachine : MonoBehaviour
         characterControllers.Add(rubberController);
         characterControllers.Add(rulerController);
         characterControllers.Add(pencilController);
+        CameraFadeAnimator = GameObject.FindGameObjectWithTag("CameraFade").GetComponent<Animator>();
     }
 
     private void Start()
@@ -331,7 +332,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         vertInput = movementInput.y;
         horInput = movementInput.x;
-        cameraInputY = cameraInput.y * settingsMenu._SensitivityMultiplier;
-        cameraInputX = cameraInput.x * settingsMenu._SensitivityMultiplier;
+        cameraInputY = cameraInput.y * settingsMenu.sensitivity;
+        cameraInputX = cameraInput.x * settingsMenu.sensitivity;
     }
 }

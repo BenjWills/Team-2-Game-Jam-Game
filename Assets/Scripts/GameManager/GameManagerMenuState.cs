@@ -34,6 +34,10 @@ public class GameManagerMenuState : GameManagerBaseState
     }
     public override void CheckSwitchStates()
     {
+        if (Ctx._PlayingGame)
+        {
+            SwitchState(Factory.Game());
+        }
     }
     public override void InitializeSubState()
     {

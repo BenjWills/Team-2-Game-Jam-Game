@@ -51,6 +51,7 @@ public class GameManagerStateMachine : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(Camera.main);
         //SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         states = new GameManagerStateFactory(this);
         //_Paused = true;
@@ -58,40 +59,50 @@ public class GameManagerStateMachine : MonoBehaviour
 
     private void Start()
     {
-        _PlayingGame = true;
-        _CanMove = true;
         menuManager = GameObject.FindObjectOfType<MenuManager>();
-        playerStateMachine = GameObject.FindObjectOfType<PlayerStateMachine>();
+        
         //audioManager = GameObject.FindObjectOfType<AudioManager>();
+        
+        
+        currentState = states.Menu();
+        currentState.EnterState();
+        _GameplayTimer = 0;
+    }
+
+    public void LoadIntoGame()
+    {
+        playerStateMachine = GameObject.FindObjectOfType<PlayerStateMachine>();
         menuCamera = GameObject.FindGameObjectWithTag("MenuCamera").GetComponent<CinemachineVirtualCamera>();
         rubberCamera = GameObject.FindGameObjectWithTag("RubberCamera").GetComponent<CinemachineVirtualCamera>();
         rulerCamera = GameObject.FindGameObjectWithTag("RulerCamera").GetComponent<CinemachineVirtualCamera>();
         pencilCamera = GameObject.FindGameObjectWithTag("PencilCamera").GetComponent<CinemachineVirtualCamera>();
-        Player = GameObject.FindGameObjectWithTag("Player");
-        Cameras.Add(menuCamera);
+        //Cameras.Add(menuCamera);
         Cameras.Add(rubberCamera);
         Cameras.Add(rulerCamera);
         Cameras.Add(pencilCamera);
-        currentState = states.Menu();
-        currentState.EnterState();
-        _GameplayTimer = 0;
-        Treasure = GameObject.FindGameObjectWithTag("Treasure");
+        CopSummonSpot = GameObject.FindGameObjectWithTag("CopSummonPoint").transform;
+        TaskText = GameObject.FindGameObjectWithTag("TimerText").GetComponent<TMP_Text>();
+        TimerImage = GameObject.FindGameObjectWithTag("TimerImage").GetComponent<Image>();
+        Player = GameObject.FindGameObjectWithTag("Player");
+        VaultDoor = GameObject.FindGameObjectWithTag("Vault").GetComponent<Animator>();
         playerStateMachine.characterControllers[0].transform.position = new Vector3(0, .57f, -2);
         playerStateMachine.characterControllers[1].transform.position = new Vector3(-2.5f, .57f, -2);
         playerStateMachine.characterControllers[2].transform.position = new Vector3(2.5f, .57f, -2);
+        Treasure = GameObject.FindGameObjectWithTag("Treasure");
     }
+
     private void Update()
     {
+        Debug.Log(_PlayingGame);
         currentState.UpdateStates();
         //if (_Paused || !_PlayingGame)
         //{
         //    _CanMove = false;
         //}
         //if (!_CanMove ) { }
-        GameplayTimer();
     }
 
-    private void GameplayTimer()
+    public void GameplayTimer()
     {
         if (_GameplayTimer == 0)
         {

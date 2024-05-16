@@ -15,4 +15,8 @@ public class GameManagerStateFactory
     {
         return new GameManagerMenuState(context, this);
     }
+    public GameManagerBaseState Game()
+    {
+        return new GameManagerGameState(context, this);
+    }
 }

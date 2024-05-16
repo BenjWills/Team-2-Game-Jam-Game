@@ -90,7 +90,6 @@ public class DoorScript : MonoBehaviour
             {
                 MaxTime = PencilTimer;
             }
-            Debug.Log("Unlocking");
             if (UnlockTimer>=MaxTime)
             {
                 UnlockDoor();

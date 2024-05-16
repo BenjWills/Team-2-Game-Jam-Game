@@ -15,6 +15,11 @@ TagManager:
   - Text
   - EndPoint
   - Treasure
+  - CopSummonPoint
+  - TimerImage
+  - TimerText
+  - Vault
+  - CameraFade
   layers:
   - Default
   - TransparentFX

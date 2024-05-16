@@ -11,6 +11,15 @@ public class CameraFadeScript : MonoBehaviour
         playerStateMachine = FindObjectOfType<PlayerStateMachine>();
         menuManager = FindObjectOfType<MenuManager>();
     }
+
+    private void Update()
+    {
+        if (playerStateMachine==null)
+        {
+            playerStateMachine = FindObjectOfType<PlayerStateMachine>();
+        }
+    }
+
     public void FinishedCameraFade()
     {
         playerStateMachine.FinishTransform = true;

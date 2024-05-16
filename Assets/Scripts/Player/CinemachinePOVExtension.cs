@@ -21,6 +21,18 @@ public class CinemachinePOVExtension : CinemachineExtension
         startingRotation = transform.localRotation.eulerAngles;
     }
 
+    private void Update()
+    {
+        if (gameManager == null)
+        {
+            gameManager = FindAnyObjectByType<GameManagerStateMachine>();
+        }
+        if (playerStateMachine == null)
+        {
+            playerStateMachine = FindAnyObjectByType<PlayerStateMachine>();
+        }
+    }
+
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {
         if (vcam.Follow&&gameManager._PlayingGame)
