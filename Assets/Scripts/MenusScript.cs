@@ -123,7 +123,7 @@ public class MenusScript : MonoBehaviour
     }
     public void MartonButton()
     {
-        Application.OpenURL("");
+        Application.OpenURL("https://phearo01.itch.io/");
     }
     public void GuilhermeButton()
     {
