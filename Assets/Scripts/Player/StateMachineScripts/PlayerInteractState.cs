@@ -65,7 +65,6 @@ public class PlayerInteractState : PlayerBaseState
     private void CheckForInteractables()
     {
         int index = 0;
-        Debug.Log(InteractablesInArea);
         foreach (GameObject interactable in InteractablesInArea)
         {
             currentInteractable = interactable;
@@ -81,10 +80,6 @@ public class PlayerInteractState : PlayerBaseState
                 {
                     AbilityOnObject();
                 }
-            }
-            else
-            {
-                Debug.Log("WALL");
             }
         }
     }
@@ -147,7 +142,6 @@ public class PlayerInteractState : PlayerBaseState
     {
         var VentScript = currentInteractable.GetComponent<VentScript>();
         VentScript.VentInteracted();
-        Debug.Log("!");
     }
     private void AbilityOnDoor()
     {
