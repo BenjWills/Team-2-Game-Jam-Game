@@ -34,6 +34,7 @@ public class VentScript : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(gameManager.CharactersRemaining);
         if (Arrow.activeSelf)
         {
             Arrow.transform.LookAt(playerStateMachine.transform.position);
@@ -52,7 +53,7 @@ public class VentScript : MonoBehaviour
     {
         gameManager.CharactersEscaped++;
         gameManager.CharactersRemaining++;
-        if (gameManager.CharactersEscaped+gameManager.CharactersCaught != 3)
+        if (gameManager.CharactersRemaining<=2)
         {
             switch (playerStateMachine.CharacterType)
             {
@@ -74,6 +75,7 @@ public class VentScript : MonoBehaviour
         {
             playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
             playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
+            Debug.Log("FINISHED");
         }
     }
 }

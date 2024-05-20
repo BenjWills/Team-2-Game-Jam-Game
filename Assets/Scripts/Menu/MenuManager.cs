@@ -251,6 +251,7 @@ public class MenuManager : MonoBehaviour
         if (escaped)
         {
             FinishCanvas.SetActive(true);
+            Debug.Log("MENU MANAGER ACTIVE");
             EventSystem.current.SetSelectedGameObject(FS_Finish);
             int index = 0;
             foreach(GameObject star in Stars)

@@ -21,7 +21,6 @@ public class InteractCone : MonoBehaviour
         if (col.CompareTag("Interact"))
         {
             InCone.Add(col.gameObject);
-            Debug.Log(col.gameObject);
         }
     }
     private void OnTriggerExit(Collider col)
