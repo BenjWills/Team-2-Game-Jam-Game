@@ -199,6 +199,25 @@ public class MenuManager : MonoBehaviour
         //PlayerUI.SetActive(true);
         playerStateMachine = FindObjectOfType<PlayerStateMachine>();
         MainMenuCanvas.SetActive(false);
+        ResetValues();
+    }
+
+    private void ResetValues()
+    {
+        gameManager.CharacterSacrificed = false;
+        gameManager.CharactersCaught = 0;
+        gameManager.CharactersRemaining = 3;
+        if (playerStateMachine == null)
+        {
+            playerStateMachine = FindObjectOfType<PlayerStateMachine>();
+        }
+        playerStateMachine._RubberArrested = false;
+        playerStateMachine._RulerArrested = false;
+        playerStateMachine._PencilArrested = false;
+        playerStateMachine._RubberTaken = false;
+        playerStateMachine._RulerTaken = false;
+        playerStateMachine._PencilTaken = false;
+        playerStateMachine._Actioning = false;
     }
 
     public void M_Quit()
