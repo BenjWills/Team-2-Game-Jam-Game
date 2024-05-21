@@ -104,13 +104,11 @@ public class MenusScript : MonoBehaviour
         currentRes = screenRes[resIndex];
         Screen.SetResolution(currentRes.width, currentRes.height, Screen.fullScreen);
         PlayerPrefs.SetInt("Resolution", resIndex);
-        Debug.Log(PlayerPrefs.GetInt("Resolution"));
     }
 
     public void SetSensitivity(float tempSensitivity)
     {
         sensitivity = tempSensitivity;
-        Debug.Log(tempSensitivity);
         PlayerPrefs.SetFloat("Sensitivity", tempSensitivity);
     }
 

@@ -34,7 +34,6 @@ public class VentScript : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(gameManager.CharactersRemaining);
         if (Arrow.activeSelf)
         {
             Arrow.transform.LookAt(playerStateMachine.transform.position);

@@ -30,9 +30,6 @@ public class GameManagerStateMachine : MonoBehaviour
     public int CharactersRemaining;
 
 
-
-    public TMP_Text TaskText;
-
     public float _GameplayTimer;
     public float _MaxTimer = 150f;
     public Image TimerImage;
@@ -48,6 +45,17 @@ public class GameManagerStateMachine : MonoBehaviour
     public CinemachineVirtualCamera rulerCamera;
     public CinemachineVirtualCamera pencilCamera;
     public List<CinemachineVirtualCamera> Cameras;
+
+    [Header("UI Elements")]
+
+    public TMP_Text TaskText;
+    public Image[] icons;
+    public Sprite[] sprites;
+    public Sprite[] barsprites;
+
+
+
+
 
     private void Awake()
     {
@@ -71,6 +79,7 @@ public class GameManagerStateMachine : MonoBehaviour
 
     public void LoadIntoGame()
     {
+        Cameras.Clear();
         playerStateMachine = GameObject.FindObjectOfType<PlayerStateMachine>();
         menuCamera = GameObject.FindGameObjectWithTag("MenuCamera").GetComponent<CinemachineVirtualCamera>();
         rubberCamera = GameObject.FindGameObjectWithTag("RubberCamera").GetComponent<CinemachineVirtualCamera>();
@@ -95,6 +104,7 @@ public class GameManagerStateMachine : MonoBehaviour
     {
         
         currentState.UpdateStates();
+        UpdateUI();
         //if (_Paused || !_PlayingGame)
         //{
         //    _CanMove = false;
@@ -161,4 +171,41 @@ public class GameManagerStateMachine : MonoBehaviour
             _GameplayTimer = _MaxTimer;
         }
     }
+
+    private void UpdateUI()
+    {
+        if (playerStateMachine!=null)
+        {
+            CheckForBars();
+        }
+    }
+
+    private void CheckForBars()
+    {
+        if (playerStateMachine._RubberArrested)
+        {
+            icons[0].sprite = barsprites[0];
+        }
+        else
+        {
+            icons[0].sprite = sprites[0];
+        }
+        if (playerStateMachine._RulerArrested)
+        {
+            icons[1].sprite = barsprites[1];
+        }
+        else
+        {
+            icons[1].sprite = sprites[1];
+        }
+        if (playerStateMachine._PencilArrested)
+        {
+            icons[2].sprite = barsprites[2];
+        }
+        else
+        {
+            icons[2].sprite = sprites[2];
+        }
+    }
+
 }

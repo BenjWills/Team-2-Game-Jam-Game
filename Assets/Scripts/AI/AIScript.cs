@@ -142,63 +142,23 @@ public class AIScript : MonoBehaviour
     {
         if (collidedObject.gameObject == rubber)
         {
-            gameManager.CharactersRemaining++;
-            playerStateMachine._RubberArrested = true;
-            finishRubber = true;
-            gameManager.CharactersCaught++;
-            if (gameManager.CharactersRemaining>=3)
+            if (!playerStateMachine._RubberArrested)
             {
-                playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
-                playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
+                ArrestRubber();
             }
-            else
-            {
-                if (playerStateMachine.CharacterType == 0)
-                {
-                    playerStateMachine.ShouldChangeCharacter = true;
-                    playerStateMachine.ForceSwitch();
-                }
-            }
-            
         }
         if (collidedObject.gameObject == ruler)
         {
-            gameManager.CharactersRemaining++;
-            playerStateMachine._RulerArrested = true;
-            finishRuler = true;
-            gameManager.CharactersCaught++;
-            if (gameManager.CharactersRemaining >= 3)
+            if (!playerStateMachine._RulerArrested)
             {
-                playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
-                playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
-            }
-            else
-            {
-                if (playerStateMachine.CharacterType == 1)
-                {
-                    playerStateMachine.ShouldChangeCharacter = true;
-                    playerStateMachine.ForceSwitch();
-                }
+                ArrestRuler();
             }
         }
         if (collidedObject.gameObject == pencil)
         {
-            gameManager.CharactersRemaining++;
-            playerStateMachine._PencilArrested = true;
-            finishPencil = true;
-            gameManager.CharactersCaught++;
-            if (gameManager.CharactersRemaining >= 3)
+            if (!playerStateMachine._PencilArrested)
             {
-                playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
-                playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
-            }
-            else
-            {
-                if (playerStateMachine.CharacterType == 2)
-                {
-                    playerStateMachine.ShouldChangeCharacter = true;
-                    playerStateMachine.ForceSwitch();
-                }
+                ArrestPencil();
             }
         }
         if (playerStateMachine._RubberArrested && playerStateMachine._RulerArrested&& playerStateMachine._PencilArrested)
@@ -206,7 +166,73 @@ public class AIScript : MonoBehaviour
             playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
             playerStateMachine.CameraFadeAnimator.SetTrigger("Caught");
         }
-    }   
+    }  
+    
+
+    private void ArrestRubber()
+    {
+        gameManager.CharactersRemaining++;
+        finishRubber = true;
+        gameManager.CharactersCaught++;
+        if (gameManager.CharactersRemaining >= 3 && !playerStateMachine._RubberArrested)
+        {
+            playerStateMachine._RubberArrested = true;
+            playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
+            playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
+        }
+        else
+        {
+            if (playerStateMachine.CharacterType == 0)
+            {
+                playerStateMachine.ShouldChangeCharacter = true;
+                playerStateMachine.ForceSwitch();
+            }
+        }
+        playerStateMachine._RubberArrested = true;
+    }
+    private void ArrestRuler()
+    {
+        gameManager.CharactersRemaining++;
+        finishRuler = true;
+        gameManager.CharactersCaught++;
+        if (gameManager.CharactersRemaining >= 3 && !playerStateMachine._RulerArrested)
+        {
+            playerStateMachine._RulerArrested = true;
+            playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
+            playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
+        }
+        else
+        {
+            if (playerStateMachine.CharacterType == 1)
+            {
+                playerStateMachine.ShouldChangeCharacter = true;
+                playerStateMachine.ForceSwitch();
+            }
+        }
+        playerStateMachine._RulerArrested = true;
+    }
+    private void ArrestPencil()
+    {
+        gameManager.CharactersRemaining++;
+        finishPencil = true;
+        gameManager.CharactersCaught++;
+        if (gameManager.CharactersRemaining >= 3 && !playerStateMachine._PencilArrested)
+        {
+            playerStateMachine._PencilArrested = true;
+            playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
+            playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
+        }
+        else
+        {
+            if (playerStateMachine.CharacterType == 2)
+            {
+                playerStateMachine.ShouldChangeCharacter = true;
+                playerStateMachine.ForceSwitch();
+            }
+        }
+        playerStateMachine._PencilArrested = true;
+    }
+
 
     private void CheckIfArrested()
     {

@@ -163,6 +163,7 @@ public class MenuManager : MonoBehaviour
 
     public void GoToMenu()
     {
+        ResetValues();
         PlayerUI.SetActive(false);
         playerStateMachine = null;
         SceneManager.LoadScene(0);
@@ -172,7 +173,10 @@ public class MenuManager : MonoBehaviour
         gameManager._PlayingGame = false;
         gameManager._Paused = true;
         PauseCanvas.SetActive(false);
+        FinishCanvas.SetActive(false);
+        CaughtCanvas.SetActive(false);
         MainMenuCanvas.SetActive(true);
+        gameManager._GameplayTimer = 0;
         EventSystem.current.SetSelectedGameObject(FS_Menu);
     }
 
@@ -206,18 +210,20 @@ public class MenuManager : MonoBehaviour
     {
         gameManager.CharacterSacrificed = false;
         gameManager.CharactersCaught = 0;
-        gameManager.CharactersRemaining = 3;
-        if (playerStateMachine == null)
+        gameManager.CharactersRemaining = 0;
+        gameManager.CopSummoned = false;
+        if (playerStateMachine != null)
         {
-            playerStateMachine = FindObjectOfType<PlayerStateMachine>();
+            playerStateMachine._RubberArrested = false;
+            playerStateMachine._RulerArrested = false;
+            playerStateMachine._PencilArrested = false;
+            playerStateMachine._RubberTaken = false;
+            playerStateMachine._RulerTaken = false;
+            playerStateMachine._PencilTaken = false;
+            playerStateMachine._Actioning = false;
+            playerStateMachine.ShouldChangeCharacter = false;
+            playerStateMachine.CharacterType = 0;
         }
-        playerStateMachine._RubberArrested = false;
-        playerStateMachine._RulerArrested = false;
-        playerStateMachine._PencilArrested = false;
-        playerStateMachine._RubberTaken = false;
-        playerStateMachine._RulerTaken = false;
-        playerStateMachine._PencilTaken = false;
-        playerStateMachine._Actioning = false;
     }
 
     public void M_Quit()
@@ -270,7 +276,6 @@ public class MenuManager : MonoBehaviour
         if (escaped)
         {
             FinishCanvas.SetActive(true);
-            Debug.Log("MENU MANAGER ACTIVE");
             EventSystem.current.SetSelectedGameObject(FS_Finish);
             int index = 0;
             foreach(GameObject star in Stars)
@@ -294,6 +299,7 @@ public class MenuManager : MonoBehaviour
             CaughtCanvas.SetActive(true);
             EventSystem.current.SetSelectedGameObject(FS_Caught);
         }
+        ResetValues();
         Time.timeScale = 0f;
     }
 

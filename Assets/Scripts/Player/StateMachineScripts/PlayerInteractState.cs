@@ -71,7 +71,6 @@ public class PlayerInteractState : PlayerBaseState
             var mask = Ctx.layerMaskInteract.value;
             if (!Physics.Linecast(Ctx._PlayerTrack[Ctx.CharacterType].position, interactable.transform.position, mask) && index == 0)
             {
-                Debug.Log("Line casts");
                 if (Ctx.IsInteractPressed)
                 {
                     InteractOnObject();
