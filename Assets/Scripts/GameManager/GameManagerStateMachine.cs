@@ -52,7 +52,9 @@ public class GameManagerStateMachine : MonoBehaviour
     public Image[] icons;
     public Sprite[] sprites;
     public Sprite[] barsprites;
-
+    public GameObject switchPrompt;
+    public GameObject interactPrompt;
+    public GameObject abilityPrompt;
 
 
 
@@ -141,17 +143,29 @@ public class GameManagerStateMachine : MonoBehaviour
     {
         if (_GameplayTimer >= 120 && !CharacterSacrificed)
         {
-            var VaultScript = FindObjectOfType<VaultScript>();
-            if (VaultScript.SacrificeCollider.enabled == false)
+            if (!playerStateMachine._RubberTaken&& !playerStateMachine._RulerTaken&& !playerStateMachine._PencilTaken)
             {
-                VaultDoor.SetTrigger("vaultOpening");
-                TaskText.text = "Make one character collect treasure!";
-                VaultScript.TimerReached();
+                var VaultScript = FindObjectOfType<VaultScript>();
+                if (VaultScript.SacrificeCollider.enabled == false)
+                {
+                    VaultDoor.SetTrigger("vaultOpening");
+                    TaskText.text = "Make one character collect treasure!";
+                    VaultScript.TimerReached();
+                }
+            }
+            else
+            {
+                _GameplayTimer += Time.deltaTime;
             }
         }
         else
         {
             _GameplayTimer += Time.deltaTime;
+            if (CharacterSacrificed)
+            {
+                CharactersRemaining++;
+                CharacterSacrificed = false;
+            }
         }
     }
     private void TimerEndReached()
@@ -163,6 +177,7 @@ public class GameManagerStateMachine : MonoBehaviour
                 playerStateMachine._RubberTaken = false;
                 playerStateMachine._RulerTaken = false;
                 playerStateMachine._PencilTaken = false;
+                CharactersRemaining--;
                 Destroy(Treasure);
             }
             var VentScript = FindObjectOfType<VentScript>();

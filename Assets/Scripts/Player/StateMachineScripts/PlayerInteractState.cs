@@ -65,12 +65,14 @@ public class PlayerInteractState : PlayerBaseState
     private void CheckForInteractables()
     {
         int index = 0;
+        ChangeText(false);
         foreach (GameObject interactable in InteractablesInArea)
         {
             currentInteractable = interactable;
             var mask = Ctx.layerMaskInteract.value;
             if (!Physics.Linecast(Ctx._PlayerTrack[Ctx.CharacterType].position, interactable.transform.position, mask) && index == 0)
             {
+                ChangeText(true);
                 if (Ctx.IsInteractPressed)
                 {
                     InteractOnObject();
@@ -80,6 +82,41 @@ public class PlayerInteractState : PlayerBaseState
                     AbilityOnObject();
                 }
             }
+        }
+    }
+
+    private void ChangeText(bool interact)
+    {
+        Ctx.gameManager.switchPrompt.SetActive(false);
+        Ctx.gameManager.interactPrompt.SetActive(false);
+        Ctx.gameManager.abilityPrompt.SetActive(false);
+        if (interact)
+        {
+            Ctx.gameManager.interactPrompt.SetActive(true);
+            var InteractType = currentInteractable.GetComponent<InteractBaseScript>()._InteractType;
+            switch (InteractType)
+            {
+                case "Door":
+                    var DoorScript = currentInteractable.GetComponent<DoorScript>();
+                    if (!DoorScript.open)
+                    {
+                        if (!DoorScript._Locked)
+                        {
+                            Ctx.gameManager.abilityPrompt.SetActive(true);
+                        }
+                        else
+                        {
+                            Ctx.gameManager.switchPrompt.SetActive(true);
+                        }
+                        Ctx.gameManager.interactPrompt.SetActive(false);
+                    }
+                    
+                    break;
+            }
+        }
+        else
+        {
+            Ctx.gameManager.switchPrompt.SetActive(true);
         }
     }
     

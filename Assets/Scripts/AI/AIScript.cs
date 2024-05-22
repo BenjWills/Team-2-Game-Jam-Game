@@ -172,11 +172,13 @@ public class AIScript : MonoBehaviour
     private void ArrestRubber()
     {
         gameManager.CharactersRemaining++;
+        collidedObject.transform.position = new Vector3(100, 0, 100);
         finishRubber = true;
         gameManager.CharactersCaught++;
         if (gameManager.CharactersRemaining >= 3 && !playerStateMachine._RubberArrested)
         {
             playerStateMachine._RubberArrested = true;
+            CheckTimer();
             playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
             playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
         }
@@ -193,11 +195,13 @@ public class AIScript : MonoBehaviour
     private void ArrestRuler()
     {
         gameManager.CharactersRemaining++;
+        collidedObject.transform.position = new Vector3(100, 0, 100);
         finishRuler = true;
         gameManager.CharactersCaught++;
         if (gameManager.CharactersRemaining >= 3 && !playerStateMachine._RulerArrested)
         {
             playerStateMachine._RulerArrested = true;
+            CheckTimer();
             playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
             playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
         }
@@ -214,11 +218,13 @@ public class AIScript : MonoBehaviour
     private void ArrestPencil()
     {
         gameManager.CharactersRemaining++;
+        collidedObject.transform.position = new Vector3(100, 0, 100);
         finishPencil = true;
         gameManager.CharactersCaught++;
         if (gameManager.CharactersRemaining >= 3 && !playerStateMachine._PencilArrested)
         {
             playerStateMachine._PencilArrested = true;
+            CheckTimer();
             playerStateMachine.CameraFadeAnimator.SetBool("Switch", true);
             playerStateMachine.CameraFadeAnimator.SetTrigger("Finish");
         }
@@ -231,6 +237,16 @@ public class AIScript : MonoBehaviour
             }
         }
         playerStateMachine._PencilArrested = true;
+    }
+
+    private void CheckTimer()
+    {
+        if (gameManager._GameplayTimer != gameManager._MaxTimer)
+        {
+            playerStateMachine._RubberArrested = true;
+            playerStateMachine._RulerArrested = true;
+            playerStateMachine._PencilArrested = true;
+        }
     }
 
 
